@@ -1,0 +1,21 @@
+{
+  "block.kitchenparkour.custom_block": "Custom Block",
+  "block.kitchenparkour.ruby_ore": "Ruby Deposit",
+  "block.kitchenparkour.ruby_block": "Block of Ruby",
+  "block.kitchenparkour.charged_ruby_block": "Charged Ruby Block",
+  "block.kitchenparkour.kpc_table": "Forge of Valor",
+  "item.kitchenparkour.ruby_powder": "Ruby Essence",
+  "item.kitchenparkour.ruby_gem": "Ruby Gemstone",
+  "item.kitchenparkour.parkour_gripper": "Parkour Gripper",
+  "item.kitchenparkour.ultimate_parkour_gripper": "Ultimate Parkour Gripper",
+  "item.kitchenparkour.ultimate_parkour_gripper_v2": "Ultimate Parkour Gripper v2",
+  "item.kitchenparkour.ravenous_rod": "Ravenous Rod",
+  "item.kitchenparkour.mystical_fish_bone": "Mystical Fish Bone",
+  "item.kitchenparkour.gods_wings": "Wings of Order",
+  "item.kitchenparkour.blue_fins": "Blue Fins",
+  "item.kitchenparkour.super_trident": "Triton's Enforcement",
+  "itemGroup.kpc_tab": "KPC",
+  "container.kpc_crafting": "Forge of Valor",
+  "enchantment.kitchenparkour.sun_blessing": "Blessing of the Sun",
+  "enchantment.kitchenparkour.stealth": "Stealth"
+}

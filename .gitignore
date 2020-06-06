@@ -1,3 +1,17 @@
+
+# ignore forge stuff
+
+kpc/build/
+kpc/old files/
+kpc/.gradle/
+kpc/.idea/
+kpc/badcrafting/
+kpc/*
+
+!kpc/src/
+
+# default java stuff
+
 # Compiled class file
 *.class
 
