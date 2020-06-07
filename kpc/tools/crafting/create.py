@@ -16,7 +16,15 @@ def unique(text):
                 text = text.replace(letter, "")
     return ret
 
+print("Enter name of item to be crafted")
 itemName = input("item name: ").strip()
+print("""To enter the shape of the recipe as a string (9 Characters)
+i.e. "aa b bc c" would yield
+"aa",
+"b b",
+"c c"
+""")
+
 recipe = input("recipe: ")
 while len(recipe) != 9:
     recipe = input("recipe: ")
