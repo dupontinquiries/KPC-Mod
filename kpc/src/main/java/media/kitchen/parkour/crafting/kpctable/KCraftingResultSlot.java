@@ -31,12 +31,23 @@ public class KCraftingResultSlot extends Slot {
     /**
      * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new stack.
      */
+    /*
     public ItemStack decrStackSize(int amount) {
         if (this.getHasStack()) {
             this.amountCrafted += Math.min(amount, this.getStack().getCount());
         }
 
         return super.decrStackSize(amount);
+    }
+    */
+
+    public ItemStack decrStackSize(int amount) {
+        if (this.getHasStack()) {
+            this.amountCrafted += Math.min(amount, this.getStack().getCount());
+        }
+
+        return super.decrStackSize(amount);
+
     }
 
     /**
@@ -45,6 +56,7 @@ public class KCraftingResultSlot extends Slot {
      */
     protected void onCrafting(ItemStack stack, int amount) {
         this.amountCrafted += amount;
+        System.out.println(" amountCrafted = " + amountCrafted);
         this.onCrafting(stack);
     }
 

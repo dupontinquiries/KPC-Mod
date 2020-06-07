@@ -1,7 +1,6 @@
 package media.kitchen.parkour.crafting.kpctable;
 
 import media.kitchen.parkour.Parkour;
-import media.kitchen.parkour.crafting.IKCraftingRecipe;
 import media.kitchen.parkour.crafting.IKRecipeType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -24,10 +23,13 @@ import java.util.Optional;
 import java.util.Random;
 
 public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
+
+    private static int trigger = 0;
+
     private Random random;
     private final CraftingInventory craftMatrix = new CraftingInventory(this, 3, 3);
     private final CraftResultInventory craftResult = new CraftResultInventory();
-    private final IWorldPosCallable field_217070_e;
+    private final IWorldPosCallable worldPos;
     private final PlayerEntity player;
 
     public KPCContainer(int p_i50089_1_, PlayerInventory p_i50089_2_) {
@@ -37,9 +39,9 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
 
     public KPCContainer(int winId, PlayerInventory playerInventory, IWorldPosCallable worldPos) {
         super(ContainerType.CRAFTING, winId);
-        this.field_217070_e = worldPos;
+        this.worldPos = worldPos;
         this.player = playerInventory.player;
-        this.addSlot(new CraftingResultSlot(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 35));
+        this.addSlot(new KCraftingResultSlot(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 35));
 
         for(int i = 0; i < 3; ++i) {
             for(int j = 0; j < 3; ++j) {
@@ -72,6 +74,8 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
                     itemstack = icraftingrecipe.getCraftingResult(inventory);
                     System.out.println("   func_217066_a");
                     //p_217066_1_.playSound(null, new BlockPos(p_217066_2_), Parkour.KPC_TABLE_CRAFT.get(), SoundCategory.AMBIENT, 1.5F, 1F );
+                    //resultInv.setInventorySlotContents(0, itemstack);
+                    //serverplayerentity.connection.sendPacket(new SSetSlotPacket(anInt, 0, itemstack));
                 }
             }
             resultInv.setInventorySlotContents(0, itemstack);
@@ -83,7 +87,7 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
      * Callback for when the crafting matrix is changed.
      */
     public void onCraftMatrixChanged(IInventory inventoryIn) {
-        this.field_217070_e.consume((world, blockPos) -> {
+        this.worldPos.consume((world, blockPos) -> {
             func_217066_a(this.windowId, world, this.player, this.craftMatrix, this.craftResult);
             world.getWorld().playSound(null, new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ()), Parkour.PARKOUR_GRIPPER_READY.get(), SoundCategory.AMBIENT, 0.5F, 1F );
         });
@@ -107,7 +111,7 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
      */
     public void onContainerClosed(PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
-        this.field_217070_e.consume((p_217068_2_, p_217068_3_) -> {
+        this.worldPos.consume((p_217068_2_, p_217068_3_) -> {
             this.clearContainer(playerIn, p_217068_2_, this.craftMatrix);
         });
     }
@@ -116,7 +120,7 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
      * Determines whether supplied player can use this container
      */
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(this.field_217070_e, playerIn, Parkour.KPC_TABLE.get());
+        return isWithinUsableDistance(this.worldPos, playerIn, Parkour.KPC_TABLE.get());
     }
 
     /**
@@ -131,7 +135,7 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
             if (index == 0) {
-                this.field_217070_e.consume((p_217067_2_, p_217067_3_) -> {
+                this.worldPos.consume((p_217067_2_, p_217067_3_) -> {
                     itemstack1.getItem().onCreated(itemstack1, p_217067_2_, playerIn);
                 });
                 if (!this.mergeItemStack(itemstack1, 10, 46, true)) {
