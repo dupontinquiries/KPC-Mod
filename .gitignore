@@ -9,6 +9,7 @@ kpc/badcrafting/
 kpc/*
 
 !kpc/src/
+!kpc/tools/
 
 # default java stuff
 
