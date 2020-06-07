@@ -26,10 +26,12 @@ public class KPCTable extends Block {
      * @param pos
      * @return
      */
+    /*
     @Override
     public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
         return new SimpleNamedContainerProvider((a, p_220270_3_, p_220270_4_) -> {
             return new KPCContainer(a, p_220270_3_, IWorldPosCallable.of(worldIn, pos));
         }, label);
     }
+    */
 }
