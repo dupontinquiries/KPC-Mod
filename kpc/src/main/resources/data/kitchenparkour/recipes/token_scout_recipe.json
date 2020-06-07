@@ -7,10 +7,10 @@
 ],
   "key": {
     "a": {
-      "item": "kitchenparkour:charged_taydon_block"
+      "item": "kitchenparkour:oberite_block"
     }
   },
   "result": {
-    "item": "kitchenparkour:token_warrior"
+    "item": "kitchenparkour:token_scout"
   }
 }

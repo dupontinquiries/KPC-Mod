@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
@@ -32,13 +33,16 @@ public class QuestHitChargeBase<T extends Item> extends QuestItemBase {
 
     @Override
     protected void activateQuest(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-        boolean flag = entity instanceof PlayerEntity;
-        if (flag && !((PlayerEntity) entity).isCreative() )
-            stack.setDamage( (int) (stack.getMaxDamage() * f) - 1);
-        if (!flag) {
-            stack.setDamage( (int) (stack.getMaxDamage() * f) - 1);
+        if (entity instanceof LivingEntity) {
+            LivingEntity living = (LivingEntity) entity;
+            if (getNBTBoolean(stack, actTag) == false) {
+                stack.damageItem((int) (stack.getMaxDamage() * f) - 1, living, (p_220045_0_) -> {
+                    p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+                });
+                world.playSound(null, new BlockPos(entity), Parkour.PARKOUR_GRIPPER_READY.get(), SoundCategory.AMBIENT, 1F, 1F + ( Item.random.nextFloat() * 0.4F ) - 0.2F );
+            }
         }
-        world.playSound(null, new BlockPos(entity), Parkour.PARKOUR_GRIPPER_READY.get(), SoundCategory.AMBIENT, 1F, 1F + ( Item.random.nextFloat() * 0.4F ) - 0.2F );
+        setNBTBoolean(stack, actTag, true);
     }
 
     /**

@@ -67,12 +67,12 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
         if (!world.isRemote) {
             ServerPlayerEntity serverplayerentity = (ServerPlayerEntity)player;
             ItemStack itemstack = ItemStack.EMPTY;
-            Optional<ICraftingRecipe> optional = world.getServer().getRecipeManager().getRecipe(IKRecipeType.KPC_CRAFTING, inventory, world);
+            Optional<ICraftingRecipe> optional = world.getServer().getRecipeManager().getRecipe(IKRecipeType.KPC_CRAFTING_SHAPED, inventory, world);
             if (optional.isPresent()) {
                 IRecipe icraftingrecipe = optional.get();
                 if (resultInv.canUseRecipe(world, serverplayerentity, icraftingrecipe)) {
                     itemstack = icraftingrecipe.getCraftingResult(inventory);
-                    System.out.println("   func_217066_a");
+                    //System.out.println("   func_217066_a");
                     //p_217066_1_.playSound(null, new BlockPos(p_217066_2_), Parkour.KPC_TABLE_CRAFT.get(), SoundCategory.AMBIENT, 1.5F, 1F );
                     //resultInv.setInventorySlotContents(0, itemstack);
                     //serverplayerentity.connection.sendPacket(new SSetSlotPacket(anInt, 0, itemstack));
@@ -128,7 +128,7 @@ public class KPCContainer extends RecipeBookContainer<CraftingInventory> {
      * inventory and the other inventory(s).
      */
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
-        System.out.println("   transferStackInSlot");
+        //System.out.println("   transferStackInSlot");
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
         if (slot != null && slot.getHasStack()) {

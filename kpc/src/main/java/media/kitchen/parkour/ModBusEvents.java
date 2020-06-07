@@ -4,6 +4,7 @@ import media.kitchen.parkour.itemtype.token.capabilities.ParkourScoutCapability;
 import media.kitchen.parkour.itemtype.token.capabilities.ParkourTankCapability;
 import media.kitchen.parkour.itemtype.token.capabilities.ParkourWarriorCapability;
 import media.kitchen.parkour.itemtype.token.TokenType;
+import media.kitchen.parkour.world.ore.OberiteGen;
 import media.kitchen.parkour.world.ore.RubyOreGen;
 import media.kitchen.parkour.world.ore.TaydonOreGen;
 import media.kitchen.parkour.world.structure.KPCForgeBlob;
@@ -52,6 +53,7 @@ public class ModBusEvents {
     public static void loadCompleteEvent(FMLLoadCompleteEvent event) {
         RubyOreGen.generateOre();
         TaydonOreGen.generateOre();
+        OberiteGen.generateOre();
     }
 
     /*

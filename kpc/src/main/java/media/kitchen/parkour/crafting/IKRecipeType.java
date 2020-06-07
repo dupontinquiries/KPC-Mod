@@ -12,7 +12,8 @@ import net.minecraft.world.World;
 import java.util.Optional;
 
 public interface IKRecipeType<T extends IRecipe<?>> {
-    IRecipeType<ICraftingRecipe> KPC_CRAFTING = register("kpc_crafting");
+    IRecipeType<ICraftingRecipe> KPC_CRAFTING_SHAPED = register("kpc_crafting");
+    IRecipeType<ICraftingRecipe> KPC_CRAFTING_SHAPELESS = register("kpc_crafting_shapeless");
     //IRecipeType<FurnaceRecipe> SMELTING = register("smelting");
 
     static <T extends IRecipe<?>> IRecipeType<T> register(final String key) {

@@ -75,7 +75,7 @@ public class SwordBase extends ItemBase {
         stack.damageItem(1, attacker, (p_220045_0_) -> {
             p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
         });
-        target.hurtTime = 0;
+        target.hurtResistantTime = 0;
         return true;
     }
 

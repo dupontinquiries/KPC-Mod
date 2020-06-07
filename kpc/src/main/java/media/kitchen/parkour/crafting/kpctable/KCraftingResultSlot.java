@@ -7,7 +7,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IRecipeHolder;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.NonNullList;
 
 public class KCraftingResultSlot extends Slot {
@@ -83,7 +82,7 @@ public class KCraftingResultSlot extends Slot {
     public ItemStack onTake(PlayerEntity thePlayer, ItemStack stack) {
         this.onCrafting(stack);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(thePlayer);
-        NonNullList<ItemStack> nonnulllist = thePlayer.world.getRecipeManager().getRecipeNonNull(IKRecipeType.KPC_CRAFTING, this.craftMatrix, thePlayer.world);
+        NonNullList<ItemStack> nonnulllist = thePlayer.world.getRecipeManager().getRecipeNonNull(IKRecipeType.KPC_CRAFTING_SHAPED, this.craftMatrix, thePlayer.world);
         net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
         for(int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = this.craftMatrix.getStackInSlot(i);

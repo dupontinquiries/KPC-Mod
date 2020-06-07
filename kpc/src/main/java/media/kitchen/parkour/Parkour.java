@@ -4,6 +4,7 @@ import media.kitchen.parkour.blocktype.BlockBase;
 import media.kitchen.parkour.blocktype.GlassBase;
 import media.kitchen.parkour.blocktype.SauberiteBlock;
 import media.kitchen.parkour.crafting.KPCShapedRecipe;
+import media.kitchen.parkour.crafting.KShapelessRecipe;
 import media.kitchen.parkour.crafting.kpctable.KPCTable;
 import media.kitchen.parkour.itemtype.*;
 import media.kitchen.parkour.itemtype.armor.*;
@@ -260,6 +261,17 @@ public class Parkour
     public static final RegistryObject<Item> CHARGED_RUBY_BLOCK_ITEM = ITEMS.register("charged_ruby_block",
             () -> new ItemBlockBase(CHARGED_RUBY_BLOCK.get()));
 
+    // Taydon
+    public static final RegistryObject<Item> TAYDON_ORE_ITEM = ITEMS.register("taydon_ore",
+            () -> new ItemBlockBase(TAYDON_ORE.get()));
+
+    public static final RegistryObject<Item> TAYDON_BLOCK_ITEM = ITEMS.register("taydon_block",
+            () -> new ItemBlockBase(TAYDON_BLOCK.get()));
+
+    public static final RegistryObject<Item> CHARGED_TAYDON_BLOCK_ITEM = ITEMS.register("charged_taydon_block",
+            () -> new ItemBlockBase(CHARGED_TAYDON_BLOCK.get()));
+
+    // Sauberite
     public static final RegistryObject<Item> SAUBERITE_BLOCK_ITEM = ITEMS.register("sauberite_block",
             () -> new ItemBlockBase(SAUBERITE_BLOCK.get()));
 
@@ -291,9 +303,9 @@ public class Parkour
                             7, 1, new Item.Properties()
                             .addToolType(ToolType.PICKAXE, 4).maxStackSize(1).maxDamage(224000)),
                     3 ) );
+
     public static final RegistryObject<Item> UNLIT_SPARK = ITEMS.register("unlit_spark",
             () -> new QuestHitChargeBase(RUBY_PICK.get(), 0.2F));
-
     // Solar Tools
     public static final RegistryObject<Item> SOLAR_PICK = ITEMS.register("solar_pick",
             () -> AreaPickaxeBase.setSize( new AreaPickaxeBase(ItemTier.DIAMOND,
@@ -460,6 +472,9 @@ public class Parkour
 
     public static final RegistryObject<KPCShapedRecipe.Serializer> KPC_SHAPED = RECIPE_SERIALIZERS.register("kpc_crafting_shaped",
             () -> new KPCShapedRecipe.Serializer());
+
+    public static final RegistryObject<KShapelessRecipe.Serializer> KPC_SHAPELESS = RECIPE_SERIALIZERS.register("kpc_crafting_shapeless",
+            () -> new KShapelessRecipe.Serializer());
 
     //public static final RegistryObject<ShapedRecipe.Serializer> KPC_SHAPED = RECIPE_TYPES.register("kpc_shaped", () -> new ShapedRecipe.Serializer());
 

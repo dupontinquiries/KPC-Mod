@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class QuestItemBase<T extends Item> extends ItemBase {
 
     private final T result;
-    private final String actTag = "kqct";
+    protected final String actTag = "kqct";
 
     public QuestItemBase(T item) {
         result = item;
@@ -20,6 +20,7 @@ public class QuestItemBase<T extends Item> extends ItemBase {
 
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         boolean isActivated = getNBTBoolean(stack, actTag);
+
         if (!isActivated) {
             activateQuest(stack, worldIn, entityIn, itemSlot, isSelected);
         }

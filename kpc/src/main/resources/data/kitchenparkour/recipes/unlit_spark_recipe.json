@@ -1,15 +1,15 @@
 {
   "type": "kitchenparkour:kpc_crafting_shaped",
   "pattern": [
-    "GGG",
-    " S ",
-    " S "
-  ],
+    "ggg",
+    " s ",
+    " s "
+],
   "key": {
-    "G": {
+    "g": {
       "item": "kitchenparkour:ruby_gem"
     },
-    "D": {
+    "s": {
       "item": "minecraft:stick"
     }
   },
