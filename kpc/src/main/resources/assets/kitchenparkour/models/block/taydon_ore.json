@@ -1,6 +1,6 @@
 {
-   "parent": "block/cube_all",
-   "textures": {
-       "all": "kitchenparkourcombat:block/taydon_ore"
-   }
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "kitchenparkour:block/taydon_ore"
+	}
 }

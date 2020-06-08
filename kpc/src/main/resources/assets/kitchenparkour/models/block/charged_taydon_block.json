@@ -1,6 +1,6 @@
 {
-   "parent": "block/cube_all",
-   "textures": {
-       "all": "kitchenparkourcombat:block/charged_ns_block"
-   }
+	"parent": "block/cube_all",
+	"textures": {
+		"all": "kitchenparkour:block/charged_taydon_block"
+	}
 }
