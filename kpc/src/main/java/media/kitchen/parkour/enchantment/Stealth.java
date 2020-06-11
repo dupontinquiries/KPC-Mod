@@ -30,7 +30,7 @@ public class Stealth extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() { return 1; }
+    public int getMaxLevel() { return 10; }
 
     @Override
     public int getMinLevel() {
@@ -66,11 +66,17 @@ public class Stealth extends Enchantment {
                     boolean isArmorWorn = player.inventory.armorItemInSlot(EquipmentSlotType.FEET.getIndex())
                             .getItem() == Parkour.TAYDON_BOOTS.get();
                     if (isArmorWorn) {
-                        boolean flag = entity.isPotionActive( Effects.SPEED );
+                        boolean flag = entity.isPotionActive( Effects.RESISTANCE );
+                        if ( !flag || ( entity.getActivePotionEffect( Effects.RESISTANCE ).getDuration() < 20 ) ) {
+                            if (player.getHealth() < .2 * player.getMaxHealth()) {
+                                entity.addPotionEffect( new EffectInstance( Effects.RESISTANCE, 65, 4) );
+                                entity.heal(le.getAmount() / 2);
+                            }
+                        }
+                        flag = entity.isPotionActive( Effects.SPEED );
                         if ( !flag || ( entity.getActivePotionEffect( Effects.SPEED ).getDuration() < 20 ) ) {
                             if (player.getHealth() < .2 * player.getMaxHealth()) {
-                                entity.addPotionEffect( new EffectInstance( Effects.SPEED, 25, 4) );
-                                entity.heal(le.getAmount() / 2);
+                                entity.addPotionEffect( new EffectInstance( Effects.SPEED, 25, 2) );
                             }
                         }
                     }
