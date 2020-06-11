@@ -1,11 +1,15 @@
 package media.kitchen.parkour;
 
 import media.kitchen.parkour.blocktype.BlockBase;
+import media.kitchen.parkour.blocktype.ChargableBlockSunlight;
 import media.kitchen.parkour.blocktype.GlassBase;
 import media.kitchen.parkour.blocktype.SauberiteBlock;
+import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
 import media.kitchen.parkour.crafting.KPCShapedRecipe;
 import media.kitchen.parkour.crafting.KShapelessRecipe;
 import media.kitchen.parkour.crafting.kpctable.KPCTable;
+import media.kitchen.parkour.enchantment.Stealth;
+import media.kitchen.parkour.enchantment.SunBlessing;
 import media.kitchen.parkour.itemtype.*;
 import media.kitchen.parkour.itemtype.armor.*;
 import media.kitchen.parkour.itemtype.parkour.AquaParkour;
@@ -26,11 +30,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
@@ -62,6 +69,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Parkour.MOD_ID)
@@ -169,6 +177,7 @@ public class Parkour
     //
 
     // Register Blocks
+    // TileEntity tileentity = new ChargableTile(TileEntityType.MOB_SPAWNER);cks
     public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, Parkour.MOD_ID);
     // Custom Blocks
 
@@ -184,17 +193,26 @@ public class Parkour
                     .sound(SoundType.STONE)
                     .harvestLevel(3).harvestTool(ToolType.PICKAXE))); // 0-3 = vanilla, 4 & 5 = upgrades to ruby pick
 
+    public static final RegistryObject<Block> CHARGED_RUBY_BLOCK = BLOCKS.register("charged_ruby_block",
+            () -> new BlockBase(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
+                    .hardnessAndResistance(7.0F, 16.0F)
+                    .sound(SoundType.GLASS)
+                    .harvestLevel(3).harvestTool(ToolType.PICKAXE)));
+
+    public static final RegistryObject<Block> RUBY_BLOCK = BLOCKS.register("ruby_block",
+            () -> new ChargableBlockSunlight(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
+                    .hardnessAndResistance(6.0F, 13.0F)
+                    .sound(SoundType.METAL)
+                    .harvestLevel(3).harvestTool(ToolType.PICKAXE), CHARGED_RUBY_BLOCK.get().getDefaultState(), 0, 3));
+
+    /*
     public static final RegistryObject<Block> RUBY_BLOCK = BLOCKS.register("ruby_block",
             () -> new BlockBase(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
                     .hardnessAndResistance(6.0F, 13.0F)
                     .sound(SoundType.METAL)
                     .harvestLevel(3).harvestTool(ToolType.PICKAXE)));
 
-    public static final RegistryObject<Block> CHARGED_RUBY_BLOCK = BLOCKS.register("charged_ruby_block",
-            () -> new BlockBase(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
-                    .hardnessAndResistance(7.0F, 16.0F)
-                    .sound(SoundType.GLASS)
-                    .harvestLevel(3).harvestTool(ToolType.PICKAXE)));
+     */
 
     // Taydon Blocks
     public static final RegistryObject<Block> TAYDON_ORE = BLOCKS.register("taydon_ore",
@@ -203,17 +221,17 @@ public class Parkour
                     .sound(SoundType.STONE)
                     .harvestLevel(4).harvestTool(ToolType.PICKAXE))); // 0-3 = vanilla, 4 & 5 = upgrades to ruby pick
 
-    public static final RegistryObject<Block> TAYDON_BLOCK = BLOCKS.register("taydon_block",
-            () -> new BlockBase(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
-                    .hardnessAndResistance(7.0F, 14.0F)
-                    .sound(SoundType.METAL)
-                    .harvestLevel(4).harvestTool(ToolType.PICKAXE)));
-
     public static final RegistryObject<Block> CHARGED_TAYDON_BLOCK = BLOCKS.register("charged_taydon_block",
             () -> new BlockBase(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
                     .hardnessAndResistance(8.0F, 17.0F)
                     .sound(SoundType.GLASS)
                     .harvestLevel(4).harvestTool(ToolType.PICKAXE)));
+
+    public static final RegistryObject<Block> TAYDON_BLOCK = BLOCKS.register("taydon_block",
+            () -> new ChargableBlockSunlight(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
+                    .hardnessAndResistance(7.0F, 14.0F)
+                    .sound(SoundType.METAL)
+                    .harvestLevel(4).harvestTool(ToolType.PICKAXE), CHARGED_TAYDON_BLOCK.get().getDefaultState(), 5, 15));
 
     // Crafting Table
     public static final RegistryObject<Block> KPC_TABLE = BLOCKS.register("kpc_table",
@@ -237,7 +255,7 @@ public class Parkour
                     .hardnessAndResistance(5.0F, 16.0F).sound(SoundType.ANVIL)));
      */
 
-    // !Custom Blocks
+    // !Register Blocks
 
     //
 
@@ -439,6 +457,18 @@ public class Parkour
 
     // !Solar Armor
 
+    // Register TileEntities
+
+    public static final DeferredRegister<TileEntityType<?>> TET = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, Parkour.MOD_ID);
+    // Custom Blocks
+
+    // Working Example
+
+    public static final RegistryObject<TileEntityType<ChargableTile>> CHARGABLE_TE = TET.register("chargable_tile",
+        () -> TileEntityType.Builder.create(ChargableTile::new, RUBY_BLOCK.get(), TAYDON_BLOCK.get()).build(null));
+
+    // !Register TileEntities
+
     // !Custom Items
 
     //
@@ -487,6 +517,17 @@ public class Parkour
     // Enchantments
 
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = new DeferredRegister<>(ForgeRegistries.ENCHANTMENTS, Parkour.MOD_ID);
+
+    public static final RegistryObject<Enchantment> SUN_BLESSING = ENCHANTMENTS.register("sun_blessing",
+            () -> new SunBlessing(Enchantment.Rarity.VERY_RARE,
+                    EnchantmentType.create("sun_blessing_filter", Predicate.isEqual(SolarBase.class) ),
+                    new EquipmentSlotType[] { EquipmentSlotType.LEGS, EquipmentSlotType.CHEST } ));
+
+    public static final RegistryObject<Enchantment> STEALTH = ENCHANTMENTS.register("stealth",
+            () -> new Stealth(Enchantment.Rarity.VERY_RARE,
+                    EnchantmentType.create("stealth_filter", item -> item.equals(TAYDON_BOOTS)),
+                    new EquipmentSlotType[] { EquipmentSlotType.FEET } ));
+
 
 
     /*
@@ -567,7 +608,9 @@ public class Parkour
 
         RECIPE_SERIALIZERS.register(modEventBus);
 
-        //ENCHANTMENTS.register(modEventBus);
+        ENCHANTMENTS.register(modEventBus);
+
+        TET.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup); // for structures
     }
