@@ -9,6 +9,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,7 +23,7 @@ public class Stealth extends Enchantment {
     }
 
     @Override
-    public int getMaxLevel() { return 10; }
+    public int getMaxLevel() { return 3; }
 
     @Override
     public int getMinLevel() {
@@ -30,13 +32,14 @@ public class Stealth extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment b) {
-        return ( ! ( b.equals(Enchantments.FROST_WALKER) || b.equals(Enchantments.DEPTH_STRIDER) ) );
+        return ( ! ( b.equals(Enchantments.FROST_WALKER) || b.equals(Enchantments.DEPTH_STRIDER) || b.equals(Parkour.STEALTH.get() ) ) );
     }
 
     @Mod.EventBusSubscriber(modid = Parkour.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class HasStealth {
 
         @SubscribeEvent
+        @OnlyIn(Dist.CLIENT)
         public static void doStuff(Event event) {
 
             /*

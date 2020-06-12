@@ -63,7 +63,7 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
     }
 
     protected void updateCharge(BlockState state, World world, BlockPos pos, Random rand) {
-        if (world.dimension.hasSkyLight()) {
+        if (world.dimension.hasSkyLight() && ( !world.getBlockState(pos.up()).isSolid() || world.isAirBlock(pos.up()) ) ) {
             int lightValue = world.getLightFor(LightType.SKY, pos.up()) - world.getSkylightSubtracted();
             float f = world.getCelestialAngleRadians(1.0F);
             float f1 = f < (float)Math.PI ? 0.0F : ((float)Math.PI * 2F);

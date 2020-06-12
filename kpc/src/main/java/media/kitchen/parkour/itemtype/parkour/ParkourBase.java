@@ -313,7 +313,7 @@ public class ParkourBase extends SwordBase {
                     PlayerEntity player = (PlayerEntity) entityIn;
                     // remove fall damage
                     if (isSelected) {
-                        player.fallDistance = 0;
+                        if (player.fallDistance > 1) player.fallDistance -= 0.65;
                     }
                     // !remove fall damage
 

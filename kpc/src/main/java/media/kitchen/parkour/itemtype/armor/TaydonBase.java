@@ -14,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TaydonBase extends ArmorBase {
 
@@ -21,6 +23,7 @@ public class TaydonBase extends ArmorBase {
         super(materialIn, slot, builder);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         BlockPos bp = new BlockPos(entityIn);
@@ -130,7 +133,9 @@ public class TaydonBase extends ArmorBase {
         }
         // !timer
         // potions
-        applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+        if (!solarEffect) {
+            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+        }
         // !potions
         setNBTInt(stack, cooldownTag, cooldown);
     }

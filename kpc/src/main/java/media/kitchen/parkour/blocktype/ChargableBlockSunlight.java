@@ -40,7 +40,7 @@ public class ChargableBlockSunlight extends BlockBase implements ITileEntityProv
     }
 
     @Override
-    public boolean isTransparent(BlockState state) {
+    public boolean hasTileEntity(final BlockState state) {
         return true;
     }
 

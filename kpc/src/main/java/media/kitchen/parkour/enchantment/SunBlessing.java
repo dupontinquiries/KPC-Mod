@@ -8,6 +8,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,7 +24,7 @@ public class SunBlessing extends Enchantment {
 
     @Override
     public int getMaxLevel() {
-        return 10;
+        return 3;
     }
 
     @Override
@@ -32,13 +34,14 @@ public class SunBlessing extends Enchantment {
 
     @Override
     protected boolean canApplyTogether(Enchantment b) {
-        return ( ! (b.equals(Enchantments.PROTECTION)) );
+        return ( ! ( b.equals(Enchantments.PROTECTION) || b.equals(Parkour.SUN_BLESSING.get()) ) );
     }
 
     @Mod.EventBusSubscriber(modid = Parkour.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class HasSunBlessing {
 
         @SubscribeEvent
+        @OnlyIn(Dist.CLIENT)
         public static void doStuff(Event event) {
 
 

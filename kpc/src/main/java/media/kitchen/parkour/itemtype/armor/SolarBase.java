@@ -15,6 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SolarBase extends ArmorBase {
 
@@ -22,6 +24,7 @@ public class SolarBase extends ArmorBase {
         super(materialIn, slot, builder);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         BlockPos bp = new BlockPos(entityIn);
@@ -131,20 +134,22 @@ public class SolarBase extends ArmorBase {
             slowSolarEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
         }
         // !timer
-        // float
         if (solarEffect) {
+            // float
             if ( itemSlot == EquipmentSlotType.FEET.getIndex() && isArmorWorn
                     && worldIn.getFluidState(player.getPosition()).isEmpty() && !player.isSwimming()
                     && !player.abilities.isFlying && player.getTicksElytraFlying() < 30) {
                 player.addVelocity(0, .03 + (lightValue * .001625), 0);
-                if (player.fallDistance > 1) player.fallDistance -= 0.003;
+                if (player.fallDistance > 1) player.fallDistance -= 0.4;
             }
+            // !float
+
+            // potions
+            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            // !potions
 
         }
-        // !float
-        // potions
-        applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
-        // !potions
+
         setNBTInt(stack, cooldownTag, cooldown);
 
     }

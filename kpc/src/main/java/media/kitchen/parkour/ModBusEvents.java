@@ -1,5 +1,7 @@
 package media.kitchen.parkour;
 
+import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
+import media.kitchen.parkour.blocktype.tileentity.ChargableTileTaydon;
 import media.kitchen.parkour.itemtype.token.capabilities.ParkourScoutCapability;
 import media.kitchen.parkour.itemtype.token.capabilities.ParkourTankCapability;
 import media.kitchen.parkour.itemtype.token.capabilities.ParkourWarriorCapability;
@@ -11,6 +13,7 @@ import media.kitchen.parkour.world.structure.KPCForgeBlob;
 import media.kitchen.parkour.world.structure.KPCForgeBlobPiece;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
@@ -18,7 +21,9 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 
@@ -92,6 +97,18 @@ public class ModBusEvents {
     */
 
     // !mob spawns
+
+    // tile entities
+
+    /*
+    @SubscribeEvent
+    public void renderTiles(final FMLClientSetupEvent event) {
+        ClientRegistry.bindTileEntityRenderer(Parkour.CHARGABLE_TE.get(), ChargableTile::new);
+        ClientRegistry.bindTileEntityRenderer(Parkour.CHARGABLE_TE_TAYDON.get(), ChargableTileTaydon::new);
+    }
+     */
+
+    // !tile entities
 
     // capabilities
 

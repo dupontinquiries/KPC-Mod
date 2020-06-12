@@ -2,7 +2,6 @@ package media.kitchen.parkour;
 
 import media.kitchen.parkour.blocktype.BlockBase;
 import media.kitchen.parkour.blocktype.ChargableBlockSunlight;
-import media.kitchen.parkour.blocktype.GlassBase;
 import media.kitchen.parkour.blocktype.SauberiteBlock;
 import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
 import media.kitchen.parkour.blocktype.tileentity.ChargableTileTaydon;
@@ -33,7 +32,6 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -50,7 +48,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -245,10 +242,6 @@ public class Parkour
     public static final RegistryObject<Block> OBERITE_BLOCK = BLOCKS.register("oberite_block",
             () -> new BlockBase(Block.Properties.from(Blocks.OBSIDIAN)));
 
-    // Hard Glass Block
-    public static final RegistryObject<Block> HARD_GLASS = BLOCKS.register("hard_glass",
-            () -> new GlassBase(Block.Properties.create(Material.GLASS).hardnessAndResistance(-1.0F, 3600000.0F).sound(SoundType.GLASS).notSolid()));//GlassBase(Block.Properties.create(Material.GLASS).notSolid().hardnessAndResistance(-1.0F, 3600000.0F))); Block sand = Blocks.GLASS;
-
     /*
     public static final RegistryObject<Block> KPCT = BLOCKS.register("kpct",
             () -> new KPCT(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
@@ -296,8 +289,6 @@ public class Parkour
     public static final RegistryObject<Item> OBERITE_BLOCK_ITEM = ITEMS.register("oberite_block",
             () -> new ItemBlockBase(OBERITE_BLOCK.get()));
 
-    public static final RegistryObject<Item> HARD_GLASS_ITEM = ITEMS.register("hard_glass",
-            () -> new ItemBlockBase(HARD_GLASS.get()));
 
     public static final RegistryObject<Item> RUBY_POWDER = ITEMS.register("ruby_powder",
             () -> new MineralBase(new Item.Properties().maxStackSize(64)));
@@ -527,13 +518,13 @@ public class Parkour
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = new DeferredRegister<>(ForgeRegistries.ENCHANTMENTS, Parkour.MOD_ID);
 
     public static final RegistryObject<Enchantment> SUN_BLESSING = ENCHANTMENTS.register("sun_blessing",
-            () -> new SunBlessing(Enchantment.Rarity.VERY_RARE,
-                    EnchantmentType.create("sun_blessing_filter", Predicate.isEqual(SolarBase.class) ),
+            () -> new SunBlessing(Enchantment.Rarity.RARE,
+                    EnchantmentType.create("sun_blessing_filter", item -> item == SOLAR_LEGS.get() ),
                     new EquipmentSlotType[] { EquipmentSlotType.LEGS, EquipmentSlotType.CHEST } ));
 
     public static final RegistryObject<Enchantment> STEALTH = ENCHANTMENTS.register("stealth",
-            () -> new Stealth(Enchantment.Rarity.VERY_RARE,
-                    EnchantmentType.create("stealth_filter", item -> item.equals(TAYDON_BOOTS)),
+            () -> new Stealth(Enchantment.Rarity.RARE,
+                    EnchantmentType.create("stealth_filter", item -> item == TAYDON_BOOTS.get()),
                     new EquipmentSlotType[] { EquipmentSlotType.FEET } ));
 
 
