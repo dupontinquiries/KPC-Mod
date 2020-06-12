@@ -29,14 +29,15 @@ public class ParkourBase extends SwordBase {
 
     // item type variables
     //Parkour.MODID +
-    protected String cooldownTag = "kcoo";
-    protected String wallLeapTag = "kwal";
-    protected String chargeTag = "kchr";
-    protected String readyTag = "krdy";
+    protected String cooldownTag = "kcoo",
+        wallLeapTag = "kwal",
+        chargeTag = "kchr",
+        readyTag = "krdy",
+        usesTag = "kuse";
 
     protected AmbigSoundType leapSound;
 
-    protected int maxCooldown, maxCharge, maxWallLeap, maxReady;
+    protected int maxCooldown, maxCharge, maxWallLeap, maxReady, maxUses;
 
     protected Random rand;
 
@@ -84,6 +85,8 @@ public class ParkourBase extends SwordBase {
         maxCooldown = maxCharge = maxWallLeap = 13;
         maxReady = 9;
 
+        maxUses = 1;
+
         isElytraFlyer = false;
 
         leapSound = new AmbigSoundType(Parkour.PARKOUR_GRIPPER_JUMP);
@@ -111,6 +114,7 @@ public class ParkourBase extends SwordBase {
 
     public ParkourBase setElytraFlyer() {
         isElytraFlyer = true;
+        maxUses += 2;
         return this;
     }
 
@@ -189,18 +193,23 @@ public class ParkourBase extends SwordBase {
         int     cooldown = getNBTInt(stack, cooldownTag),
                 wallLeap = getNBTInt(stack, wallLeapTag),
                 charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag);
+                ready    = getNBTInt(stack, readyTag),
+                uses     = getNBTInt(stack, usesTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
         if (charge   == -1) charge   = maxCharge;
         if (ready    == -1) ready    = maxReady;
+        if (uses     == -1) uses     = maxUses;
         // !get nbt data
         if (ready == 0) {
             // code to jump, wall leap, etc.
             short glide = countWalls(player, e);
-            if (cooldown == 0 && !(player.isInWater() || player.abilities.isFlying)) {
+            System.out.println(uses);
+            if (cooldown == 0 && uses > 0
+                    && !(player.isInWater() || player.abilities.isFlying)) {
                 cooldown = maxCooldown;
+                --uses;
                 if (player.isAirBorne && charge == 0 && glide > 1) {
                     // walljump hook
                     this.wallLeapTriggered(e, player, handIn);
@@ -217,6 +226,7 @@ public class ParkourBase extends SwordBase {
             // !code above
             // efficiently sync NBT
             setNBTInt(stack, cooldownTag, cooldown);
+            setNBTInt(stack, usesTag,     uses);
             //setNBTInt(stack, wallLeapTag, wallLeap); // read-only
             //setNBTInt(stack, chargeTag, charge);     // read-only
 
@@ -280,19 +290,15 @@ public class ParkourBase extends SwordBase {
         int     cooldown = getNBTInt(stack, cooldownTag),
                 wallLeap = getNBTInt(stack, wallLeapTag),
                 charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag);
+                ready    = getNBTInt(stack, readyTag),
+                uses     = getNBTInt(stack, usesTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
         if (charge   == -1) charge   = maxCharge;
         if (ready    == -1) ready    = maxReady;
+        if (uses     == -1) uses     = maxUses;
         // !get nbt data
-        if (cooldown > 0) {
-            --cooldown;
-        }
-        if (wallLeap > 0) {
-            --wallLeap;
-        }
 
         if (!isSelected) {
             ready = maxReady;
@@ -311,6 +317,20 @@ public class ParkourBase extends SwordBase {
                         player.fallDistance = 0;
                     }
                     // !remove fall damage
+
+                    // recharge uses
+
+                    if ( cooldown > 0 & (!player.isAirBorne || player.isOnLadder()) ) {
+                        --cooldown;
+                    }
+                    if (wallLeap > 0) {
+                        --wallLeap;
+                    }
+
+                    if ( !player.isAirBorne || player.isOnLadder() ) {
+                        uses = maxUses;
+                    }
+                    // !recharge uses
 
                     // wallrunning search
                     short glide = 0;
@@ -397,8 +417,9 @@ public class ParkourBase extends SwordBase {
         // efficiently sync NBT
         setNBTInt(stack, cooldownTag, cooldown);
         setNBTInt(stack, wallLeapTag, wallLeap);
-        setNBTInt(stack, chargeTag, charge);
-        setNBTInt(stack, readyTag, ready);
+        setNBTInt(stack, chargeTag,   charge);
+        setNBTInt(stack, readyTag,    ready);
+        setNBTInt(stack, usesTag,     uses);
         // !sync NBT
     }
 

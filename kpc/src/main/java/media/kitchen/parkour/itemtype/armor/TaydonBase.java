@@ -38,16 +38,12 @@ public class TaydonBase extends ArmorBase {
 
 
             boolean isDay = worldIn.isDaytime();
-            //System.out.println(" isDay = " + isDay);
-            //System.out.println(" skyLight = " + worldIn.getSkylightSubtracted());
             boolean living = entityIn instanceof LivingEntity;
             LivingEntity livingEntity = null;
             if ( living ) {
                 livingEntity = (LivingEntity) entityIn;
             }
             boolean solarEffect = ( lightValue > 6 );
-            System.out.println("lightValue = " + lightValue);
-            //System.out.println("solarEffect = " + solarEffect);
 
             if ( livingEntity instanceof PlayerEntity ) {
                 PlayerEntity player = (PlayerEntity) livingEntity;

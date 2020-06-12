@@ -1,11 +1,16 @@
 package media.kitchen.parkour.blocktype.tileentity;
 
 import media.kitchen.parkour.Parkour;
+import media.kitchen.parkour.itemtype.parkour.AmbigSoundType;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
@@ -56,17 +61,30 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
     }
 
     protected void updateCharge(BlockState state, World world, BlockPos pos, Random rand) {
-        //System.out.println("updateCharge");
-        boolean seeSky = world.canBlockSeeSky(pos);
-        int lightValue = world.getLightFor(LightType.SKY, pos);
-        boolean isDay = world.isDaytime();
-        System.out.println(" isDay = " + isDay);
-        System.out.println(" skyLight = " + world.getSkylightSubtracted());
+        if (world.dimension.hasSkyLight()) {
+            int lightValue = world.getLightFor(LightType.SKY, pos.up()) - world.getSkylightSubtracted();
+            float f = world.getCelestialAngleRadians(1.0F);
+            float f1 = f < (float)Math.PI ? 0.0F : ((float)Math.PI * 2F);
+            f = f + (f1 - f) * 0.2F;
+            lightValue = Math.round((float)lightValue * MathHelper.cos(f));
 
-        if (lmin <= lightValue && lightValue <= lmax) {
-            if ( ++counter > 400) {
-                world.setBlockState(pos, blockStateIn);
+            lightValue = MathHelper.clamp(lightValue, 0, 15);
+
+            lightValue += world.getLightFor(LightType.BLOCK, pos.up()) / 2;
+            //boolean solarEffect = ( lightValue > 6 );
+            //System.out.println(lightValue);
+            if (lmin <= lightValue && lightValue <= lmax) {
+                if ( ++counter > 5500) {
+                    world.setBlockState(pos, blockStateIn);
+                    AmbigSoundType sound = new AmbigSoundType(Parkour.BLOCK_CHARGE_SOUND);
+                    world.playSound(null, pos, sound.getSound(), SoundCategory.AMBIENT, 0.4F, 1F );
+                } else if (counter % 65 == 0) {
+                    AmbigSoundType sound = new AmbigSoundType(Parkour.BLOCK_CHARGE_SOUND);
+                    world.playSound(null, pos, sound.getSound(), SoundCategory.AMBIENT, 0.4F, 1F );
+                }
             }
+
+
         }
 
         markDirty();

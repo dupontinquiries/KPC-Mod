@@ -40,23 +40,16 @@ public class SolarBase extends ArmorBase {
 
             lightValue = MathHelper.clamp(lightValue, 0, 15);
 
-            System.out.println("lightValueBefore = " + lightValue);
-
-
             lightValue += worldIn.getLightFor(LightType.BLOCK, bp) / 2;
 
 
             boolean isDay = worldIn.isDaytime();
-            //System.out.println(" isDay = " + isDay);
-            //System.out.println(" skyLight = " + worldIn.getSkylightSubtracted());
             boolean living = entityIn instanceof LivingEntity;
             LivingEntity livingEntity = null;
             if ( living ) {
                 livingEntity = (LivingEntity) entityIn;
             }
             boolean solarEffect = ( lightValue > 6 );
-            System.out.println("lightValueAfter = " + lightValue);
-            //System.out.println("solarEffect = " + solarEffect);
 
             if ( livingEntity instanceof PlayerEntity ) {
                 PlayerEntity player = (PlayerEntity) livingEntity;
@@ -136,7 +129,6 @@ public class SolarBase extends ArmorBase {
         // timer
         int cooldown = getNBTInt(stack, cooldownTag);
         if (cooldown == -1) cooldown = maxCooldown;
-        //System.out.println("cooldown = " + cooldown);
         if (cooldown > 0) {
             --cooldown;
         } else {
@@ -147,8 +139,9 @@ public class SolarBase extends ArmorBase {
         // float
         if (solarEffect) {
             if ( itemSlot == EquipmentSlotType.FEET.getIndex() && isArmorWorn
-                && !player.isSwimming() && !player.abilities.isFlying && player.getTicksElytraFlying() < 20) {
-                player.addVelocity(0, .03 + (lightValue * .0016), 0);
+                    && worldIn.getFluidState(player.getPosition()).isEmpty() && !player.isSwimming()
+                    && !player.abilities.isFlying && player.getTicksElytraFlying() < 50) {
+                player.addVelocity(0, .03 + (lightValue * .001625), 0);
                 player.fallDistance -= 0.005;
             }
 

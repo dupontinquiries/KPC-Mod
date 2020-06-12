@@ -1,10 +1,7 @@
 package media.kitchen.parkour.blocktype;
 
 import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.*;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -44,8 +41,14 @@ public class ChargableBlockSunlight extends BlockBase implements ITileEntityProv
     @Nullable
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        DaylightDetectorBlock block;
         TileEntity tileentity = new ChargableTile(blockStateIn, lmin, lmax);
         return tileentity;
+    }
+
+    @Override
+    public boolean isTransparent(BlockState state) {
+        return true;
     }
 
     /*

@@ -203,7 +203,7 @@ public class Parkour
             () -> new ChargableBlockSunlight(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
                     .hardnessAndResistance(6.0F, 13.0F)
                     .sound(SoundType.METAL)
-                    .harvestLevel(3).harvestTool(ToolType.PICKAXE), CHARGED_RUBY_BLOCK.get().getDefaultState(), 0, 3));
+                    .harvestLevel(3).harvestTool(ToolType.PICKAXE), CHARGED_RUBY_BLOCK.get().getDefaultState(), 6, 50));
 
     /*
     public static final RegistryObject<Block> RUBY_BLOCK = BLOCKS.register("ruby_block",
@@ -231,7 +231,7 @@ public class Parkour
             () -> new ChargableBlockSunlight(Block.Properties.create(Material.IRON, MaterialColor.OBSIDIAN)
                     .hardnessAndResistance(7.0F, 14.0F)
                     .sound(SoundType.METAL)
-                    .harvestLevel(4).harvestTool(ToolType.PICKAXE), CHARGED_TAYDON_BLOCK.get().getDefaultState(), 5, 15));
+                    .harvestLevel(4).harvestTool(ToolType.PICKAXE), CHARGED_TAYDON_BLOCK.get().getDefaultState(), 0, 6));
 
     // Crafting Table
     public static final RegistryObject<Block> KPC_TABLE = BLOCKS.register("kpc_table",
@@ -490,6 +490,9 @@ public class Parkour
 
     public static final RegistryObject<SoundEvent> KPC_TABLE_CRAFT = SOUNDS.register("block.kpc_table_craft",
             () -> new SoundEvent(new ResourceLocation(MOD_ID, "block.kpc_table_craft")));
+
+    public static final RegistryObject<SoundEvent> BLOCK_CHARGE_SOUND = SOUNDS.register("block.block_charge_sound",
+            () -> new SoundEvent(new ResourceLocation(MOD_ID, "block.block_charge_sound")));
     // !Custom Sounds
 
     // Recipes
