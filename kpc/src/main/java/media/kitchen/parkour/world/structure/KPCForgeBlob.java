@@ -1,10 +1,7 @@
 package media.kitchen.parkour.world.structure;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.Dynamic;
 import media.kitchen.parkour.Parkour;
-import net.minecraft.entity.EntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -16,7 +13,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class KPCForgeBlob extends ScatteredStructure<NoFeatureConfig> {

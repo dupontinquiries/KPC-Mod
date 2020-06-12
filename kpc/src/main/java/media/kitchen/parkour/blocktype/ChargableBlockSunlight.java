@@ -1,19 +1,12 @@
 package media.kitchen.parkour.blocktype;
 
 import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
+import media.kitchen.parkour.blocktype.tileentity.ChargableTileTaydon;
 import net.minecraft.block.*;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class ChargableBlockSunlight extends BlockBase implements ITileEntityProvider {
 
@@ -42,8 +35,8 @@ public class ChargableBlockSunlight extends BlockBase implements ITileEntityProv
     @Override
     public TileEntity createNewTileEntity(IBlockReader worldIn) {
         DaylightDetectorBlock block;
-        TileEntity tileentity = new ChargableTile(blockStateIn, lmin, lmax);
-        return tileentity;
+        if (lmax == 6) return new ChargableTile(blockStateIn, lmin, lmax);
+        else return new ChargableTileTaydon(blockStateIn, lmin, lmax);
     }
 
     @Override

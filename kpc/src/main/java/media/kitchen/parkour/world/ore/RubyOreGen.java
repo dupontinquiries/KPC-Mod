@@ -1,7 +1,6 @@
 package media.kitchen.parkour.world.ore;
 
 import media.kitchen.parkour.Parkour;
-import media.kitchen.parkour.world.structure.ForgePiece;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;

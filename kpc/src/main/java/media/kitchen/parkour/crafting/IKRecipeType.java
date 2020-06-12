@@ -1,10 +1,7 @@
 package media.kitchen.parkour.crafting;
 
-import com.google.gson.JsonObject;
-import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.crafting.*;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;

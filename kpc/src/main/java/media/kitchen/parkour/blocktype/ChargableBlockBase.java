@@ -1,18 +1,13 @@
 package media.kitchen.parkour.blocktype;
 
-import media.kitchen.parkour.Parkour;
 import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-
-import java.util.Random;
 
 public abstract class ChargableBlockBase extends BlockBase implements ITileEntityProvider {
 
@@ -22,7 +17,7 @@ public abstract class ChargableBlockBase extends BlockBase implements ITileEntit
     }
     public ChargableBlockBase(Properties props, Block blockIn) {
         this(props);
-        blockIn = blockIn;
+        this.blockIn = blockIn;
     }
 
     public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {

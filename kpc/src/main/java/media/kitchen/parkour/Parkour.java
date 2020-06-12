@@ -5,6 +5,7 @@ import media.kitchen.parkour.blocktype.ChargableBlockSunlight;
 import media.kitchen.parkour.blocktype.GlassBase;
 import media.kitchen.parkour.blocktype.SauberiteBlock;
 import media.kitchen.parkour.blocktype.tileentity.ChargableTile;
+import media.kitchen.parkour.blocktype.tileentity.ChargableTileTaydon;
 import media.kitchen.parkour.crafting.KPCShapedRecipe;
 import media.kitchen.parkour.crafting.KShapelessRecipe;
 import media.kitchen.parkour.crafting.kpctable.KPCTable;
@@ -15,15 +16,12 @@ import media.kitchen.parkour.itemtype.armor.*;
 import media.kitchen.parkour.itemtype.parkour.AquaParkour;
 import media.kitchen.parkour.itemtype.parkour.ExplosiveParkour;
 import media.kitchen.parkour.itemtype.parkour.ParkourBase;
-import media.kitchen.parkour.itemtype.parkour.TeleParkour;
 import media.kitchen.parkour.itemtype.quest.QuestHitChargeBase;
 import media.kitchen.parkour.itemtype.token.TokenBase;
 import media.kitchen.parkour.itemtype.token.TokenType;
 import media.kitchen.parkour.itemtype.tools.AreaPickaxeBase;
 import media.kitchen.parkour.itemtype.tools.supertrident.SuperTrident;
 import media.kitchen.parkour.itemtype.tools.SwordBase;
-import media.kitchen.parkour.world.structure.ForgeStructure;
-import media.kitchen.parkour.world.structure.KPCForgeBlob;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -31,12 +29,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.*;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -49,9 +46,11 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.placement.IPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DeferredWorkQueue;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -60,6 +59,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.ObjectHolder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -408,7 +408,9 @@ public class Parkour
                     new Item.Properties().maxDamage(200)));
 
     // Solar Armor
-
+    //MinecraftServer server;
+    //ModLoader loader;
+    GameData data;
     public static SolarMaterial SOLAR_MATERIAL = new SolarMaterial();
 
     public static final RegistryObject<Item> SOLAR_HELM = ITEMS.register("solar_helm",
@@ -465,7 +467,10 @@ public class Parkour
     // Working Example
 
     public static final RegistryObject<TileEntityType<ChargableTile>> CHARGABLE_TE = TET.register("chargable_tile",
-        () -> TileEntityType.Builder.create(ChargableTile::new, RUBY_BLOCK.get(), TAYDON_BLOCK.get()).build(null));
+            () -> TileEntityType.Builder.create(ChargableTile::new, RUBY_BLOCK.get()).build(null));
+
+    public static final RegistryObject<TileEntityType<ChargableTileTaydon>> CHARGABLE_TE_TAYDON = TET.register("chargable_tile_taydon",
+            () -> TileEntityType.Builder.create(ChargableTileTaydon::new, TAYDON_BLOCK.get()).build(null));
 
     // !Register TileEntities
 
@@ -616,6 +621,8 @@ public class Parkour
         TET.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup); // for structures
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     // Structures

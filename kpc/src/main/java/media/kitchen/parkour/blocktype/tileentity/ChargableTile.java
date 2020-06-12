@@ -3,8 +3,6 @@ package media.kitchen.parkour.blocktype.tileentity;
 import media.kitchen.parkour.Parkour;
 import media.kitchen.parkour.itemtype.parkour.AmbigSoundType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -43,9 +41,13 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
 
     public ChargableTile() {
         super(Parkour.CHARGABLE_TE.get());
+        setup();
+    }
+
+    protected void setup() {
         this.blockStateIn = Parkour.CHARGED_RUBY_BLOCK.get().getDefaultState();
-        this.lmin = 3;
-        this.lmax = 12;
+        this.lmin = 6;
+        this.lmax = 50;
     }
 
     public ChargableTile(BlockState blockStateIn, int lmin, int lmax) {
@@ -74,7 +76,7 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
             //boolean solarEffect = ( lightValue > 6 );
             //System.out.println(lightValue);
             if (lmin <= lightValue && lightValue <= lmax) {
-                if ( ++counter > 5500) {
+                if ( ++counter > 500) { //5500
                     world.setBlockState(pos, blockStateIn);
                     AmbigSoundType sound = new AmbigSoundType(Parkour.BLOCK_CHARGE_SOUND);
                     world.playSound(null, pos, sound.getSound(), SoundCategory.AMBIENT, 0.4F, 1F );
@@ -102,7 +104,6 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
         super.read(compound);
         CompoundNBT initValues = compound.getCompound("initvalues");
         if (initValues != null) {
-
             this.x = initValues.getInt("x");
             this.y = initValues.getInt("y");
             this.z = initValues.getInt("z");
@@ -115,6 +116,7 @@ public class ChargableTile extends TileEntity implements ITickableTileEntity {
     }
 
     private void postRead() {
+
     }
 
 }

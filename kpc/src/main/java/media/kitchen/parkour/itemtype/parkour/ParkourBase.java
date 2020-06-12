@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;

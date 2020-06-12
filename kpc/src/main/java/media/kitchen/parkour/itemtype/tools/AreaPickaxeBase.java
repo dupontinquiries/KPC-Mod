@@ -15,7 +15,6 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -53,7 +52,7 @@ public class AreaPickaxeBase extends PickaxeBase {
     @Override
     /**
      * Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
-     */
+     **/
     public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
         if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
             stack.damageItem(1, entityLiving, (p_220038_0_) -> {

@@ -3,7 +3,6 @@ package media.kitchen.parkour.itemtype.tools.supertrident;
 import media.kitchen.parkour.Parkour;
 import media.kitchen.parkour.world.structure.goal.KRangedGoal;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.DrownedEntity;
 import net.minecraft.util.Hand;
 

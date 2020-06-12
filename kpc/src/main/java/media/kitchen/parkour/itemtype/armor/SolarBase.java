@@ -1,20 +1,15 @@
 package media.kitchen.parkour.itemtype.armor;
 
-import media.kitchen.parkour.Parkour;
-import media.kitchen.parkour.itemtype.parkour.AmbigSoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tileentity.DaylightDetectorTileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -140,9 +135,9 @@ public class SolarBase extends ArmorBase {
         if (solarEffect) {
             if ( itemSlot == EquipmentSlotType.FEET.getIndex() && isArmorWorn
                     && worldIn.getFluidState(player.getPosition()).isEmpty() && !player.isSwimming()
-                    && !player.abilities.isFlying && player.getTicksElytraFlying() < 50) {
+                    && !player.abilities.isFlying && player.getTicksElytraFlying() < 30) {
                 player.addVelocity(0, .03 + (lightValue * .001625), 0);
-                player.fallDistance -= 0.005;
+                if (player.fallDistance > 1) player.fallDistance -= 0.003;
             }
 
         }

@@ -66,8 +66,7 @@ public class KPCForgeBlobPiece2 {
                     j = ( mutableBB.maxY + mutableBB.minY ) / 2,
                     k = ( mutableBB.maxZ + mutableBB.minZ ) / 2;
             this.spawnBoss(worldIn, mutableBB, i, k, k);
-            boolean superReturn = super.func_225577_a_(worldIn, chunkGenIn, rand, mutableBB, chunkPos);
-            return superReturn;
+            return super.func_225577_a_(worldIn, chunkGenIn, rand, mutableBB, chunkPos);
         }
 
         // spawn boss fight

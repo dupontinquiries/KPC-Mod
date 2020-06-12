@@ -1,15 +1,10 @@
 package media.kitchen.parkour.itemtype.armor;
 
 import media.kitchen.parkour.Parkour;
-import media.kitchen.parkour.itemtype.ItemBase;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 

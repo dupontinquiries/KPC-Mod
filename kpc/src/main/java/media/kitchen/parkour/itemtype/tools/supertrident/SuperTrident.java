@@ -23,7 +23,7 @@ public class SuperTrident extends TridentItem {
     @Override
     /**
      * Called when the player stops using an Item (stops holding the right mouse button).
-     */
+     **/
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
         if (entityLiving instanceof PlayerEntity) {
             PlayerEntity playerentity = (PlayerEntity)entityLiving;

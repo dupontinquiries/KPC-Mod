@@ -1,25 +1,15 @@
 package media.kitchen.parkour.world.structure;
 import java.util.*;
-import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import media.kitchen.parkour.Parkour;
-import media.kitchen.parkour.itemtype.tools.supertrident.SuperTridentGoal;
 import media.kitchen.parkour.world.structure.goal.FishMeleeGoal;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.FollowMobGoal;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.DrownedEntity;
-import net.minecraft.entity.monster.GuardianEntity;
-import net.minecraft.entity.passive.fish.PufferfishEntity;
 import net.minecraft.entity.passive.fish.SalmonEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

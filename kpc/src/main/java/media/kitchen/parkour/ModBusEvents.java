@@ -11,7 +11,6 @@ import media.kitchen.parkour.world.structure.KPCForgeBlob;
 import media.kitchen.parkour.world.structure.KPCForgeBlobPiece;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;

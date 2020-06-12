@@ -2,7 +2,6 @@ package media.kitchen.parkour.itemtype.parkour;
 
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
 
 public class AmbigSoundType {
     protected SoundEvent event;
