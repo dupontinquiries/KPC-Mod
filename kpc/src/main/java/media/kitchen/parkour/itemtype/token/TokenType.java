@@ -22,14 +22,14 @@ public enum TokenType {
 
     private void setup() {
         if ( id == "kwarr" ) {
-            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE, 0.25D);
-            modifiers.put(SharedMonsterAttributes.MAX_HEALTH, -0.15D);
+            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE, 1.75D);
+            modifiers.put(SharedMonsterAttributes.MAX_HEALTH, -1D);
         } else if ( id == "ktank" ) {
-            modifiers.put(SharedMonsterAttributes.MAX_HEALTH, 1.0D);
-            modifiers.put(SharedMonsterAttributes.MOVEMENT_SPEED, -0.0005D);
+            modifiers.put(SharedMonsterAttributes.MAX_HEALTH, 2.0D);
+            modifiers.put(SharedMonsterAttributes.MOVEMENT_SPEED, -0.001D);
         } else if ( id == "kscou" ) {
-            modifiers.put(SharedMonsterAttributes.MOVEMENT_SPEED, 0.0005D);
-            modifiers.put(SharedMonsterAttributes.KNOCKBACK_RESISTANCE, -0.0002D);
+            modifiers.put(SharedMonsterAttributes.MOVEMENT_SPEED, 0.0015D);
+            modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE, -0.25D);
         }
 
     }

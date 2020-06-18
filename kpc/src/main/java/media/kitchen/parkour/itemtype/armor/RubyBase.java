@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,16 +17,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Iterator;
+
 public class RubyBase extends ArmorBase {
     public RubyBase(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-
         BlockPos bp = new BlockPos(entityIn);
         boolean seeSky = worldIn.canBlockSeeSky(bp);
         if (worldIn.dimension.hasSkyLight()) {
@@ -39,7 +40,6 @@ public class RubyBase extends ArmorBase {
 
             lightValue += worldIn.getLightFor(LightType.BLOCK, bp) / 2;
 
-
             boolean isDay = worldIn.isDaytime();
             boolean living = entityIn instanceof LivingEntity;
             LivingEntity livingEntity = null;
@@ -50,14 +50,17 @@ public class RubyBase extends ArmorBase {
 
             if ( livingEntity instanceof PlayerEntity ) {
                 PlayerEntity player = (PlayerEntity) livingEntity;
-                boolean isArmorWorn = player.inventory.armorItemInSlot(0) == stack ||
-                        player.inventory.armorItemInSlot(1) == stack ||
-                        player.inventory.armorItemInSlot(2) == stack ||
-                        player.inventory.armorItemInSlot(3) == stack;
-                rubyEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+                EquipmentSlotType slot = null;
+                Iterator<ItemStack> iter = player.getArmorInventoryList().iterator();
+                while ( iter.hasNext() ) {
+                    ItemStack s = iter.next();
+                    if ( s == stack ) {
+                        ArmorItem ai = (ArmorItem) s.getItem();
+                        slot = ai.getEquipmentSlot();
+                    }
+                }
+                rubyEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
             }
-
-
         }
     }
 
@@ -86,16 +89,17 @@ public class RubyBase extends ArmorBase {
     }
 
     protected void slowRubyEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                                  boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                                  boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
-        if ( player.getMaxHealth() - player.getHealth() < 5 ) {
-            player.heal(3);
+        if ( player.getHealth() < player.getMaxHealth() * .3 ) {
+            player.heal(1);
+            player.extinguish();
         }
     }
 
     protected void rubyEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                              boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                              boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
         // timer
@@ -105,24 +109,24 @@ public class RubyBase extends ArmorBase {
             --cooldown;
         } else {
             cooldown = maxCooldown;
-            slowRubyEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            slowRubyEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
         }
         // !timer
         // potions
-        applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+        applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
         // !potions
         setNBTInt(stack, cooldownTag, cooldown);
     }
 
     protected void applyPotions(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                                boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                                boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
-        if ( isArmorWorn && player.getHealth() < 7 ) {
+        if ( slot != null && player.getHealth() < 7 ) {
             boolean speedFlag = !player.isPotionActive(Effects.SPEED) ||
-                    ( player.isPotionActive(Effects.SPEED) && player.getActivePotionEffect(Effects.SPEED).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.SPEED) && player.getActivePotionEffect(Effects.SPEED).getDuration() < 50 );
             if ( speedFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 20, 1));
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 140, 1));
             }
         }
 

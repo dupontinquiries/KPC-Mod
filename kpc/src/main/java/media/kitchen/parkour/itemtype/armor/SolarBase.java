@@ -3,7 +3,9 @@ package media.kitchen.parkour.itemtype.armor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,13 +20,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Iterator;
+
 public class SolarBase extends ArmorBase {
 
     public SolarBase(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         BlockPos bp = new BlockPos(entityIn);
@@ -40,7 +43,6 @@ public class SolarBase extends ArmorBase {
 
             lightValue += worldIn.getLightFor(LightType.BLOCK, bp) / 2;
 
-
             boolean isDay = worldIn.isDaytime();
             boolean living = entityIn instanceof LivingEntity;
             LivingEntity livingEntity = null;
@@ -51,16 +53,18 @@ public class SolarBase extends ArmorBase {
 
             if ( livingEntity instanceof PlayerEntity ) {
                 PlayerEntity player = (PlayerEntity) livingEntity;
-                boolean isArmorWorn = player.inventory.armorItemInSlot(0) == stack ||
-                        player.inventory.armorItemInSlot(1) == stack ||
-                        player.inventory.armorItemInSlot(2) == stack ||
-                        player.inventory.armorItemInSlot(3) == stack;
-                solarEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+                EquipmentSlotType slot = null;
+                Iterator<ItemStack> iter = player.getArmorInventoryList().iterator();
+                while ( iter.hasNext() ) {
+                    ItemStack s = iter.next();
+                    if ( s == stack ) {
+                        ArmorItem ai = (ArmorItem) s.getItem();
+                        slot = ai.getEquipmentSlot();
+                    }
+                }
+                solarEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
             }
-
-
         }
-
     }
 
     protected String cooldownTag = "kcooldown";
@@ -88,9 +92,9 @@ public class SolarBase extends ArmorBase {
     }
 
     protected void slowSolarEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                               boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                               boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
         if ( solarEffect ) {
-            if ( isArmorWorn ) {
+            if ( slot != null ) {
                 player.heal(1);
             }
             repairItem(stack, player, lightValue);
@@ -110,7 +114,7 @@ public class SolarBase extends ArmorBase {
                 if (handStack.isRepairable()) {
                     repairItem( handStack, player, -1 * (lightValue + blessing * 2) / 3 );
                 }
-                ItemStack chest = player.inventory.armorItemInSlot(EquipmentSlotType.CHEST.getIndex());
+                ItemStack chest = player.inventory.armorItemInSlot(EquipmentSlotType.CHEST.getIndex()); //////
                 if (chest.isRepairable()) {
                     repairItem( chest, player, -1 * (lightValue + blessing * 2) / 3 );
                 }
@@ -121,7 +125,7 @@ public class SolarBase extends ArmorBase {
     }
 
     protected void solarEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                               boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                               boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
         // timer
@@ -131,12 +135,12 @@ public class SolarBase extends ArmorBase {
             --cooldown;
         } else {
             cooldown = maxCooldown;
-            slowSolarEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            slowSolarEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
         }
         // !timer
         if (solarEffect) {
             // float
-            if ( itemSlot == EquipmentSlotType.FEET.getIndex() && isArmorWorn
+            if ( slot == EquipmentSlotType.FEET
                     && worldIn.getFluidState(player.getPosition()).isEmpty() && !player.isSwimming()
                     && !player.abilities.isFlying && player.getTicksElytraFlying() < 30) {
                 player.addVelocity(0, .03 + (lightValue * .001625), 0);
@@ -145,7 +149,7 @@ public class SolarBase extends ArmorBase {
             // !float
 
             // potions
-            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
             // !potions
 
         }
@@ -155,26 +159,26 @@ public class SolarBase extends ArmorBase {
     }
 
     protected void applyPotions(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                               boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                               boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
-        if ( isArmorWorn && ( worldIn.isDaytime() || solarEffect ) ) {
+        if ( slot != null && ( worldIn.isDaytime() || solarEffect ) ) {
             boolean regenFlag = !player.isPotionActive(Effects.REGENERATION) ||
-                    ( player.isPotionActive(Effects.REGENERATION) && player.getActivePotionEffect(Effects.REGENERATION).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.REGENERATION) && player.getActivePotionEffect(Effects.REGENERATION).getDuration() < 50 );
             if ( regenFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 60, 1));
+                player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 140, 1));
             }
 
             boolean strengthFlag = !player.isPotionActive(Effects.STRENGTH) ||
-                    ( player.isPotionActive(Effects.STRENGTH) && player.getActivePotionEffect(Effects.STRENGTH).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.STRENGTH) && player.getActivePotionEffect(Effects.STRENGTH).getDuration() < 50 );
             if ( strengthFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 60, 1));
+                player.addPotionEffect(new EffectInstance(Effects.STRENGTH, 140, 1));
             }
 
             boolean hasteFlag = !player.isPotionActive(Effects.HASTE) ||
-                    ( player.isPotionActive(Effects.HASTE) && player.getActivePotionEffect(Effects.HASTE).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.HASTE) && player.getActivePotionEffect(Effects.HASTE).getDuration() < 50 );
             if ( hasteFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.HASTE, 60, 1));
+                player.addPotionEffect(new EffectInstance(Effects.HASTE, 140, 1));
             }
         }
 

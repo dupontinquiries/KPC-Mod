@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,13 +18,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Iterator;
+
 public class TaydonBase extends ArmorBase {
 
     public TaydonBase(IArmorMaterial materialIn, EquipmentSlotType slot, Properties builder) {
         super(materialIn, slot, builder);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         BlockPos bp = new BlockPos(entityIn);
@@ -39,7 +41,6 @@ public class TaydonBase extends ArmorBase {
 
             lightValue += worldIn.getLightFor(LightType.BLOCK, bp) / 2;
 
-
             boolean isDay = worldIn.isDaytime();
             boolean living = entityIn instanceof LivingEntity;
             LivingEntity livingEntity = null;
@@ -50,14 +51,17 @@ public class TaydonBase extends ArmorBase {
 
             if ( livingEntity instanceof PlayerEntity ) {
                 PlayerEntity player = (PlayerEntity) livingEntity;
-                boolean isArmorWorn = player.inventory.armorItemInSlot(0) == stack ||
-                        player.inventory.armorItemInSlot(1) == stack ||
-                        player.inventory.armorItemInSlot(2) == stack ||
-                        player.inventory.armorItemInSlot(3) == stack;
-                taydonEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+                EquipmentSlotType slot = null;
+                Iterator<ItemStack> iter = player.getArmorInventoryList().iterator();
+                while ( iter.hasNext() ) {
+                    ItemStack s = iter.next();
+                    if ( s == stack ) {
+                        ArmorItem ai = (ArmorItem) s.getItem();
+                        slot = ai.getEquipmentSlot();
+                    }
+                }
+                taydonEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
             }
-
-
         }
     }
 
@@ -86,11 +90,11 @@ public class TaydonBase extends ArmorBase {
     }
 
     protected void slowTaydonEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                                    boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                                    boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
         if ( !solarEffect ) {
-            if ( isArmorWorn ) {
+            if ( slot != null ) {
                 player.heal(1);
             }
             repairItem(stack, player, lightValue);
@@ -119,7 +123,7 @@ public class TaydonBase extends ArmorBase {
     }
 
     protected void taydonEffect(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                                boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                                boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
         // timer
@@ -129,22 +133,22 @@ public class TaydonBase extends ArmorBase {
             --cooldown;
         } else {
             cooldown = maxCooldown;
-            slowTaydonEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            slowTaydonEffect(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
         }
         // !timer
         // potions
         if (!solarEffect) {
-            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, isArmorWorn);
+            applyPotions(stack, worldIn, player, itemSlot, isSelected, seeSky, lightValue, solarEffect, slot);
         }
         // !potions
         setNBTInt(stack, cooldownTag, cooldown);
     }
 
     protected void applyPotions(ItemStack stack, World worldIn, PlayerEntity player, int itemSlot, boolean isSelected,
-                               boolean seeSky, int lightValue, boolean solarEffect, boolean isArmorWorn) {
+                               boolean seeSky, int lightValue, boolean solarEffect, EquipmentSlotType slot) {
 
 
-        if ( isArmorWorn && ( !solarEffect ) ) {
+        if ( slot != null && ( !solarEffect ) ) {
             /*
             boolean resisFlag = !player.isPotionActive(Effects.RESISTANCE) ||
                     ( player.isPotionActive(Effects.RESISTANCE) && player.getActivePotionEffect(Effects.RESISTANCE).getDuration() < 20 );
@@ -154,15 +158,15 @@ public class TaydonBase extends ArmorBase {
             */
 
             boolean speedFlag = !player.isPotionActive(Effects.SPEED) ||
-                    ( player.isPotionActive(Effects.SPEED) && player.getActivePotionEffect(Effects.SPEED).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.SPEED) && player.getActivePotionEffect(Effects.SPEED).getDuration() < 50 );
             if ( speedFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 60, 1));
+                player.addPotionEffect(new EffectInstance(Effects.SPEED, 140, 1));
             }
 
             boolean jumpFlag = !player.isPotionActive(Effects.JUMP_BOOST) ||
-                    ( player.isPotionActive(Effects.JUMP_BOOST) && player.getActivePotionEffect(Effects.JUMP_BOOST).getDuration() < 20 );
+                    ( player.isPotionActive(Effects.JUMP_BOOST) && player.getActivePotionEffect(Effects.JUMP_BOOST).getDuration() < 50 );
             if ( jumpFlag ) {
-                player.addPotionEffect(new EffectInstance(Effects.JUMP_BOOST, 60, 1));
+                player.addPotionEffect(new EffectInstance(Effects.JUMP_BOOST, 140, 1));
             }
         }
 
