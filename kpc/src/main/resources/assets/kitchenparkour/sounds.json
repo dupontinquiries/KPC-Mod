@@ -48,5 +48,15 @@
         "stream": true
       }
     ]
+  },
+  "item.quest_complete": {
+    "category": "item",
+    "subtitle": "item.quest_complete",
+    "sounds": [
+      {
+        "name": "kitchenparkour:item/quest_complete",
+        "stream": true
+      }
+    ]
   }
 }

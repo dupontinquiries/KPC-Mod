@@ -1,5 +1,6 @@
 package media.kitchen.parkour.itemtype.parkour;
 
+import media.kitchen.parkour.itemtype.nbthandles.ItemData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -81,10 +82,10 @@ public class TeleParkour extends ParkourBase {
 
         player.getAdjustedHorizontalFacing();
         // get nbt data
-        int     cooldown = getNBTInt(stack, cooldownTag),
-                wallLeap = getNBTInt(stack, wallLeapTag),
-                charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag);
+        int     cooldown = ItemData.getNBTInt(stack, cooldownTag),
+                wallLeap = ItemData.getNBTInt(stack, wallLeapTag),
+                charge   = ItemData.getNBTInt(stack, chargeTag),
+                ready    = ItemData.getNBTInt(stack, readyTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
@@ -111,7 +112,7 @@ public class TeleParkour extends ParkourBase {
             }
             // !code above
             // efficiently sync NBT
-            setNBTInt(stack, cooldownTag, cooldown);
+            ItemData.setNBTInt(stack, cooldownTag, cooldown);
             //setNBTInt(stack, wallLeapTag, wallLeap); // read-only
             //setNBTInt(stack, chargeTag, charge);     // read-only
 
@@ -142,7 +143,7 @@ public class TeleParkour extends ParkourBase {
         int sign = getSign(dfn);
         player.setLocationAndAngles(newPos.getX(), newPos.getY(), newPos.getZ(), player.rotationYaw, player.rotationPitch);
         world.playSound(null, new BlockPos(player), leapSound.getSound(), SoundCategory.AMBIENT, 1F, 1F + ( random.nextFloat() * 0.4F ) - 0.2F );
-        setNBTInt(stack, dashTag, maxDash);
+        ItemData.setNBTInt(stack, dashTag, maxDash);
         // cloak for one second
         boolean potionFlag = !player.isPotionActive(Effects.INVISIBILITY) ||
                 ( player.isPotionActive(Effects.INVISIBILITY) && player.getActivePotionEffect(Effects.INVISIBILITY).getDuration() < 20 );

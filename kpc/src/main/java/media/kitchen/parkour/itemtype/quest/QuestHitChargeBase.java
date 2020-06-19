@@ -6,6 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
@@ -13,36 +15,40 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class QuestHitChargeBase<T extends Item> extends QuestItemBase {
 
     protected ArrayList<Entity> filter;
-    protected float f;
+
+    public QuestHitChargeBase( T item, int d ) {
+        super(item, new Item.Properties().maxDamage(d));
+        filter = new ArrayList<Entity>();
+    }
 
     public QuestHitChargeBase( T item ) {
-        super(item);
+        super(item, 1);
         filter = new ArrayList<Entity>();
-        f = 1;
     }
 
     public QuestHitChargeBase( T item, float f ) {
-        super(item);
+        super(item, 1);
         filter = new ArrayList<Entity>();
-        this.f = f;
     }
 
     @Override
     protected void activateQuest(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-        if (entity instanceof LivingEntity) {
-            LivingEntity living = (LivingEntity) entity;
-            if (getNBTBoolean(stack, actTag) == false) {
-                stack.damageItem((int) (stack.getMaxDamage() * f) - 1, living, (p_220045_0_) -> {
-                    p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
-                });
-                world.playSound(null, new BlockPos(entity), Parkour.PARKOUR_GRIPPER_READY.get(), SoundCategory.AMBIENT, 1F, 1F + ( Item.random.nextFloat() * 0.4F ) - 0.2F );
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            if (getNBTBoolean(stack, actTag) == false && stack == player.getHeldItemMainhand()) {
+                //stack.setDamage((int) (stack.getMaxDamage() * f) - 1);
+                if (!world.isRemote) {
+                    stack.setDamage(stack.getMaxDamage() - 1);
+                    world.playSound(null, new BlockPos(entity), Parkour.QUEST_COMPLETE.get(), SoundCategory.AMBIENT, 1F, 1F + ( Item.random.nextFloat() * 0.4F ) - 0.2F );
+                    setNBTBoolean(stack, actTag, true);
+                }
             }
         }
-        setNBTBoolean(stack, actTag, true);
     }
 
     /**
@@ -55,12 +61,21 @@ public class QuestHitChargeBase<T extends Item> extends QuestItemBase {
             PlayerEntity player = (PlayerEntity) attacker;
             boolean flag = false;
 
-            for (Entity e : filter) {
-
+            if ( filter.isEmpty() ) {
+                flag = true;
+            } else for (Entity e : filter) {
+                if ( target.getClass() == e.getClass() ) {
+                    flag = true;
+                }
             }
 
-            if (rechargeOnePoint(stack, player)) {
-                yieldItem(stack, player);
+
+            if ( flag && rechargeOnePoint(stack, player) ) {
+                if (getNBTBoolean(stack, actTag) == false) {
+
+                } else {
+                    yieldItem(stack, player);
+                }
             }
 
         }

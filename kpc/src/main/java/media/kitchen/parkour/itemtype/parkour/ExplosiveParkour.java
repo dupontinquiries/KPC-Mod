@@ -1,6 +1,7 @@
 package media.kitchen.parkour.itemtype.parkour;
 
 import media.kitchen.parkour.Parkour;
+import media.kitchen.parkour.itemtype.nbthandles.ItemData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -84,7 +85,7 @@ public class ExplosiveParkour extends ParkourBase {
         if ( entityIn instanceof PlayerEntity ) {
             if ( isSelected && entityIn.isInWater() ) {
                 PlayerEntity player = (PlayerEntity) entityIn;
-                int dash = getNBTInt(stack, dashTag);
+                int dash = ItemData.getNBTInt(stack, dashTag);
                 if ( dash == -1 ) dash = 0;
                 if ( dash > 0 ) {
                     --dash;
@@ -93,7 +94,7 @@ public class ExplosiveParkour extends ParkourBase {
                     int sign = getSign(dfn);
                     player.addVelocity(multiplierXZ * .05 * path.x, multiplierY * 0.05 * path.y,
                             multiplierXZ * .05 * path.z);
-                    setNBTInt(stack, dashTag, dash);
+                    ItemData.setNBTInt(stack, dashTag, dash);
                 }
             }
 
@@ -113,10 +114,10 @@ public class ExplosiveParkour extends ParkourBase {
 
         player.getAdjustedHorizontalFacing();
         // get nbt data
-        int     cooldown = getNBTInt(stack, cooldownTag),
-                wallLeap = getNBTInt(stack, wallLeapTag),
-                charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag);
+        int     cooldown = ItemData.getNBTInt(stack, cooldownTag),
+                wallLeap = ItemData.getNBTInt(stack, wallLeapTag),
+                charge   = ItemData.getNBTInt(stack, chargeTag),
+                ready    = ItemData.getNBTInt(stack, readyTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
@@ -143,7 +144,7 @@ public class ExplosiveParkour extends ParkourBase {
             }
             // !code above
             // efficiently sync NBT
-            setNBTInt(stack, cooldownTag, cooldown);
+            ItemData.setNBTInt(stack, cooldownTag, cooldown);
             //setNBTInt(stack, wallLeapTag, wallLeap); // read-only
             //setNBTInt(stack, chargeTag, charge);     // read-only
 
@@ -168,7 +169,7 @@ public class ExplosiveParkour extends ParkourBase {
         player.addVelocity(multiplierXZ * .3 * path.x, multiplierY * 0.3 * path.y,
                 multiplierXZ * .3 * path.z);
         world.playSound(null, new BlockPos(player), Parkour.PARKOUR_GRIPPER_JUMP.get(), SoundCategory.AMBIENT, 1F, 1F + ( Item.random.nextFloat() * 0.4F ) - 0.2F );
-        setNBTInt(stack, dashTag, maxDash);
+        ItemData.setNBTInt(stack, dashTag, maxDash);
         this.causeExplosion(world, player, hand, path.scale(-1D).normalize());
     }
 

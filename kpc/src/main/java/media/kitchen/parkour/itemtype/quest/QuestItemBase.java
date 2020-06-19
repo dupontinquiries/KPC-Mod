@@ -14,7 +14,17 @@ public class QuestItemBase<T extends Item> extends ItemBase {
     private final T result;
     protected final String actTag = "kqct";
 
+    public QuestItemBase(T item, Item.Properties props) {
+        super(props);
+        result = item;
+    }
+
     public QuestItemBase(T item) {
+        result = item;
+    }
+
+    public QuestItemBase(T item, int n) {
+        super(n);
         result = item;
     }
 

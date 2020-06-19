@@ -1,6 +1,7 @@
 package media.kitchen.parkour.itemtype.parkour;
 
 import media.kitchen.parkour.Parkour;
+import media.kitchen.parkour.itemtype.nbthandles.ItemData;
 import media.kitchen.parkour.itemtype.tools.SwordBase;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -142,25 +143,6 @@ public class ParkourBase extends SwordBase {
 
     // charge var handler - for cooldown on leaping
     // wall leap var handler - for ensuring player is on wall for a time before being able to wall leap
-    protected int getNBTInt(ItemStack stack, final String query) {
-        CompoundNBT tags = stack.getOrCreateTag();
-
-        if (tags.contains(query)) {
-            return tags.getInt(query);
-        } else {
-            tags.putInt(query, -1);
-            stack.setTag(tags);
-            return -1;
-        }
-    }
-
-    protected void setNBTInt(ItemStack stack, final String query, final int value) {
-        CompoundNBT tags = stack.getOrCreateTag();
-
-        tags.putInt(query, value);
-
-        stack.setTag(tags);
-    }
 
     /**
      * Called when item is crafted/smelted. Used only by maps so far.
@@ -189,11 +171,11 @@ public class ParkourBase extends SwordBase {
 
         player.getAdjustedHorizontalFacing();
         // get nbt data
-        int     cooldown = getNBTInt(stack, cooldownTag),
-                wallLeap = getNBTInt(stack, wallLeapTag),
-                charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag),
-                uses     = getNBTInt(stack, usesTag);
+        int     cooldown = ItemData.getNBTInt(stack, cooldownTag),
+                wallLeap = ItemData.getNBTInt(stack, wallLeapTag),
+                charge   = ItemData.getNBTInt(stack, chargeTag),
+                ready    = ItemData.getNBTInt(stack, readyTag),
+                uses     = ItemData.getNBTInt(stack, usesTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
@@ -224,8 +206,8 @@ public class ParkourBase extends SwordBase {
             }
             // !code above
             // efficiently sync NBT
-            setNBTInt(stack, cooldownTag, cooldown);
-            setNBTInt(stack, usesTag,     uses);
+            ItemData.setNBTInt(stack, cooldownTag, cooldown);
+            ItemData.setNBTInt(stack, usesTag,     uses);
             //setNBTInt(stack, wallLeapTag, wallLeap); // read-only
             //setNBTInt(stack, chargeTag, charge);     // read-only
 
@@ -286,11 +268,11 @@ public class ParkourBase extends SwordBase {
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         // code for tracking timers
         // get nbt data
-        int     cooldown = getNBTInt(stack, cooldownTag),
-                wallLeap = getNBTInt(stack, wallLeapTag),
-                charge   = getNBTInt(stack, chargeTag),
-                ready    = getNBTInt(stack, readyTag),
-                uses     = getNBTInt(stack, usesTag);
+        int     cooldown = ItemData.getNBTInt(stack, cooldownTag),
+                wallLeap = ItemData.getNBTInt(stack, wallLeapTag),
+                charge   = ItemData.getNBTInt(stack, chargeTag),
+                ready    = ItemData.getNBTInt(stack, readyTag),
+                uses     = ItemData.getNBTInt(stack, usesTag);
 
         if (cooldown == -1) cooldown = maxCooldown;
         if (wallLeap == -1) wallLeap = maxWallLeap;
@@ -414,11 +396,11 @@ public class ParkourBase extends SwordBase {
             }
         }
         // efficiently sync NBT
-        setNBTInt(stack, cooldownTag, cooldown);
-        setNBTInt(stack, wallLeapTag, wallLeap);
-        setNBTInt(stack, chargeTag,   charge);
-        setNBTInt(stack, readyTag,    ready);
-        setNBTInt(stack, usesTag,     uses);
+        ItemData.setNBTInt(stack, cooldownTag, cooldown);
+        ItemData.setNBTInt(stack, wallLeapTag, wallLeap);
+        ItemData.setNBTInt(stack, chargeTag,   charge);
+        ItemData.setNBTInt(stack, readyTag,    ready);
+        ItemData.setNBTInt(stack, usesTag,     uses);
         // !sync NBT
     }
 

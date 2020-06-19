@@ -19,6 +19,7 @@ import media.kitchen.parkour.itemtype.quest.QuestHitChargeBase;
 import media.kitchen.parkour.itemtype.token.TokenBase;
 import media.kitchen.parkour.itemtype.token.TokenType;
 import media.kitchen.parkour.itemtype.tools.AreaPickaxeBase;
+import media.kitchen.parkour.itemtype.tools.spawnblade.SpawnBlade;
 import media.kitchen.parkour.itemtype.tools.supertrident.SuperTrident;
 import media.kitchen.parkour.itemtype.tools.SwordBase;
 import net.minecraft.block.Block;
@@ -28,6 +29,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.*;
@@ -304,9 +306,26 @@ public class Parkour
             () -> new MineralBase(new Item.Properties().maxStackSize(9)));
 
     public static final RegistryObject<Item> TAYDON_GEM = ITEMS.register("taydon_gem",
-            () -> new QuestHitChargeBase<>(CHARGED_TAYDON_GEM.get(), 0.1F));
+            () -> new QuestHitChargeBase<>(CHARGED_TAYDON_GEM.get(), 20));
+
+    // Legendary Arsenal
+
+
+    public static final RegistryObject<Item> WOLF_BLADE = ITEMS.register("wolf_blade",
+            () -> new SpawnBlade(ItemTier.IRON, 4, -1.8F, new Item.Properties().maxDamage(400).addToolType(ToolType.AXE, 1), EntityType.WOLF, 250, 100, 2));
+
+
+    public static final RegistryObject<Item> BONE_BLADE = ITEMS.register("bone_blade",
+            () -> new SpawnBlade(ItemTier.STONE, 3, -0.4F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SKELETON, 200, 150, 6));
+
+    public static final RegistryObject<Item> SHULKER_BLADE = ITEMS.register("shulker_blade",
+            () -> new SpawnBlade(ItemTier.DIAMOND, 5, -0.2F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SHULKER, 110, 65, 4));
+
+
+    // !Legendary Arsenal
 
     // Ruby Tools
+
     public static final RegistryObject<Item> RUBY_PICK = ITEMS.register("ruby_pick",
             () -> AreaPickaxeBase.setSize( new AreaPickaxeBase(ItemTier.DIAMOND,
                             7, 1, new Item.Properties()
@@ -314,7 +333,7 @@ public class Parkour
                     3 ) );
 
     public static final RegistryObject<Item> UNLIT_SPARK = ITEMS.register("unlit_spark",
-            () -> new QuestHitChargeBase(RUBY_PICK.get(), 0.2F));
+            () -> new QuestHitChargeBase(RUBY_PICK.get(), 45));
     // Solar Tools
     public static final RegistryObject<Item> SOLAR_PICK = ITEMS.register("solar_pick",
             () -> AreaPickaxeBase.setSize( new AreaPickaxeBase(ItemTier.DIAMOND,
@@ -322,26 +341,26 @@ public class Parkour
                         .addToolType(ToolType.PICKAXE, 5).maxStackSize(1).maxDamage(57500)),
                     6 ) );
     public static final RegistryObject<Item> UNLIT_STAR = ITEMS.register("unlit_star",
-            () -> new QuestHitChargeBase(SOLAR_PICK.get(), 0.3F));
+            () -> new QuestHitChargeBase(SOLAR_PICK.get(), 70));
 
     // Parkour Grippers
     public static final RegistryObject<Item> PARKOUR_GRIPPER = ITEMS.register("parkour_gripper",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(0.7D),8, 0.85F)
                     .setCooldownTime(25).setWallLeapTime(10).setChargeTime(20));
     public static final RegistryObject<Item> EAGER_ARTIFACT = ITEMS.register("eager_artifact",
-            () -> new QuestHitChargeBase(PARKOUR_GRIPPER.get(), 0.5F));
+            () -> new QuestHitChargeBase(PARKOUR_GRIPPER.get(), 70));
     // ultimate parkour gripper
     public static final RegistryObject<Item> ULTIMATE_PARKOUR_GRIPPER = ITEMS.register("ultimate_parkour_gripper",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.3D, 1.1D),12, 0.75F)
                     .setCooldownTime(30).setWallLeapTime(10).setChargeTime(20));
     public static final RegistryObject<Item> HUNGRY_STICK = ITEMS.register("hungry_stick",
-            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER.get(), 0.7F));
+            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER.get(), 95));
     // ultimate parkour gripper v2
     public static final RegistryObject<Item> ULTIMATE_PARKOUR_GRIPPER_V2 = ITEMS.register("ultimate_parkour_gripper_v2",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.42D, 1.2D),16, 0.7F)
                     .setCooldownTime(25).setWallLeapTime(25).setChargeTime(25));
     public static final RegistryObject<Item> RAVENOUS_ROD = ITEMS.register("ravenous_rod",
-            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER_V2.get()));
+            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER_V2.get(), 140));
     // wings of order
     public static final RegistryObject<Item> GODS_WINGS = ITEMS.register("gods_wings",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.89, 0.945D),18, 0.9F)
@@ -351,7 +370,7 @@ public class Parkour
             () -> SwordBase.setAttackAndSpeed(new AquaParkour(1.45),13, 0.8F)
                     .setCooldownTime(65).setWallLeapTime(0).setChargeTime(0)); //2.3
     public static final RegistryObject<Item> MYSTICAL_FISH_BONE = ITEMS.register("mystical_fish_bone",
-            () -> new QuestHitChargeBase(BLUE_FINS.get()));
+            () -> new QuestHitChargeBase(BLUE_FINS.get(), 80));
 
     // blue fins
     public static final RegistryObject<Item> ENDER_ROD = ITEMS.register("ender_rod",
@@ -489,6 +508,9 @@ public class Parkour
 
     public static final RegistryObject<SoundEvent> BLOCK_CHARGE_SOUND = SOUNDS.register("block.block_charge_sound",
             () -> new SoundEvent(new ResourceLocation(MOD_ID, "block.block_charge_sound")));
+
+    public static final RegistryObject<SoundEvent> QUEST_COMPLETE = SOUNDS.register("item.quest_complete",
+            () -> new SoundEvent(new ResourceLocation(MOD_ID, "item.quest_complete")));
     // !Custom Sounds
 
     // Recipes

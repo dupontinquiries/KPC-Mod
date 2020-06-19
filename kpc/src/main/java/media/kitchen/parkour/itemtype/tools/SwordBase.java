@@ -30,14 +30,14 @@ public class SwordBase extends ItemBase {
         super();
         this.tier = tier;
         this.attackDamage = 1F;
-        this.attackSpeed = 0.85F;
+        this.attackSpeed = 0.1F;
     }
 
     public SwordBase(IItemTier tier, Item.Properties props) {
         super(props);
         this.tier = tier;
         this.attackDamage = 1F;
-        this.attackSpeed = 0.85F;
+        this.attackSpeed = 0.1F;
     }
 
     public SwordBase(IItemTier tier, int attackDamageIn, float attackSpeedIn, Item.Properties props) {
@@ -75,7 +75,7 @@ public class SwordBase extends ItemBase {
         stack.damageItem(1, attacker, (p_220045_0_) -> {
             p_220045_0_.sendBreakAnimation(EquipmentSlotType.MAINHAND);
         });
-        target.hurtResistantTime = 0;
+        target.hurtResistantTime *= .8;
         return true;
     }
 
@@ -106,8 +106,8 @@ public class SwordBase extends ItemBase {
     public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
         if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.attackDamage, AttributeModifier.Operation.ADDITION));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)this.attackSpeed, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double) this.attackSpeed, AttributeModifier.Operation.ADDITION));
         }
 
         return multimap;
