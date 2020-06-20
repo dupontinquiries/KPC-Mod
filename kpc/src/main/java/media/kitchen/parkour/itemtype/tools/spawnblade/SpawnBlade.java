@@ -91,7 +91,7 @@ public class SpawnBlade<E extends CreatureEntity> extends SwordBase {
                     E l = (E) entity;
                     l.setHealth(l.getMaxHealth());
                     l.clearActivePotions();
-                    l.setPosition(attacker.getPosX() + random.nextInt(4)  - 2, attacker.getPosY(), attacker.getPosZ() + random.nextInt(4)  - 2);
+                    l.setPosition(attacker.getPosX() + random.nextInt(2)  - 1, attacker.getPosY(), attacker.getPosZ() + random.nextInt(2)  - 1);
 
                     //l.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier());
 

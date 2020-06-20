@@ -56,23 +56,23 @@ public class ParkourBase extends SwordBase {
     }
 
     public ParkourBase(Item.Properties props, final double universalMultiplier) {
-        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(300));
+        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(425));
         multiplierXZ = multiplierY = universalMultiplier;
     }
 
     public ParkourBase(final double xz, final double y) {
-        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(300));
+        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(425));
         multiplierXZ = xz;
         multiplierY = y;
     }
 
     public ParkourBase(final double universalMultiplier) {
-        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(300));
+        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(425));
         multiplierXZ = multiplierY = universalMultiplier;
     }
 
     public ParkourBase() {
-        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(300));
+        this(new Item.Properties().group(ItemGroup.COMBAT).addToolType(ToolType.AXE, 1).maxStackSize(1).defaultMaxDamage(425));
         multiplierXZ = 1;
         multiplierY = 1;
     }
@@ -188,7 +188,7 @@ public class ParkourBase extends SwordBase {
             short glide = countWalls(player, e);
             System.out.println(uses);
             if (cooldown == 0 && uses > 0
-                    && !(player.isInWater() || player.abilities.isFlying)) {
+                    && !(player.isInWater() || player.abilities.isFlying || player.onGround)) {
                 cooldown = maxCooldown;
                 --uses;
                 if (player.isAirBorne && charge == 0 && glide > 1) {

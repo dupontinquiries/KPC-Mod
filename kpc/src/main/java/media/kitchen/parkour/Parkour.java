@@ -75,7 +75,7 @@ import java.util.function.Predicate;
 public class Parkour
 {
 
-    public static final float QUEST_MODIFIER = 12F;
+    public static final int QUEST_MODIFIER = 3;
 
     public static final ItemGroup KPC_TAB = new ItemGroup("kpc_tab") {
         @Override
@@ -164,6 +164,8 @@ public class Parkour
     }
     public static final String MOD_ID = "kitchenparkour";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+
+
 
     //
 
@@ -306,20 +308,31 @@ public class Parkour
             () -> new MineralBase(new Item.Properties().maxStackSize(9)));
 
     public static final RegistryObject<Item> TAYDON_GEM = ITEMS.register("taydon_gem",
-            () -> new QuestHitChargeBase<>(CHARGED_TAYDON_GEM.get(), 20));
+            () -> new QuestHitChargeBase<>(CHARGED_TAYDON_GEM.get(), 20 * QUEST_MODIFIER));
 
     // Legendary Arsenal
 
-
+    // wolf blade
     public static final RegistryObject<Item> WOLF_BLADE = ITEMS.register("wolf_blade",
-            () -> new SpawnBlade(ItemTier.IRON, 4, -1.8F, new Item.Properties().maxDamage(400).addToolType(ToolType.AXE, 1), EntityType.WOLF, 250, 100, 2));
+            () -> new SpawnBlade(ItemTier.IRON, 4, -2.7F, new Item.Properties().maxDamage(400).addToolType(ToolType.AXE, 1), EntityType.WOLF, 250, 100, 2));
 
+    public static final RegistryObject<Item> UNCHARGED_WOLF_BLADE = ITEMS.register("uncharged_wolf_blade",
+            () -> new ItemBase(new Item.Properties().maxStackSize(1)) );
+
+    public static final RegistryObject<Item> DEAD_BLADE_C = ITEMS.register("dead_blade_c",
+            () -> new QuestHitChargeBase(UNCHARGED_WOLF_BLADE.get(), 85 * QUEST_MODIFIER));
+
+    public static final RegistryObject<Item> DEAD_BLADE_B = ITEMS.register("dead_blade_b",
+            () -> new QuestHitChargeBase(DEAD_BLADE_C.get(), 65 * QUEST_MODIFIER));
+
+    public static final RegistryObject<Item> DEAD_BLADE_A = ITEMS.register("dead_blade_a",
+            () -> new QuestHitChargeBase(DEAD_BLADE_B.get(), 45 * QUEST_MODIFIER));
 
     public static final RegistryObject<Item> BONE_BLADE = ITEMS.register("bone_blade",
-            () -> new SpawnBlade(ItemTier.STONE, 3, -0.4F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SKELETON, 200, 150, 6));
+            () -> new SpawnBlade(ItemTier.STONE, 3, -2.7F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SKELETON, 200, 150, 6));
 
     public static final RegistryObject<Item> SHULKER_BLADE = ITEMS.register("shulker_blade",
-            () -> new SpawnBlade(ItemTier.DIAMOND, 5, -0.2F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SHULKER, 110, 65, 4));
+            () -> new SpawnBlade(ItemTier.DIAMOND, 5, -2F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SHULKER, 80, 40, 3));
 
 
     // !Legendary Arsenal
@@ -333,7 +346,7 @@ public class Parkour
                     3 ) );
 
     public static final RegistryObject<Item> UNLIT_SPARK = ITEMS.register("unlit_spark",
-            () -> new QuestHitChargeBase(RUBY_PICK.get(), 45));
+            () -> new QuestHitChargeBase(RUBY_PICK.get(), 45 * QUEST_MODIFIER));
     // Solar Tools
     public static final RegistryObject<Item> SOLAR_PICK = ITEMS.register("solar_pick",
             () -> AreaPickaxeBase.setSize( new AreaPickaxeBase(ItemTier.DIAMOND,
@@ -341,36 +354,36 @@ public class Parkour
                         .addToolType(ToolType.PICKAXE, 5).maxStackSize(1).maxDamage(57500)),
                     6 ) );
     public static final RegistryObject<Item> UNLIT_STAR = ITEMS.register("unlit_star",
-            () -> new QuestHitChargeBase(SOLAR_PICK.get(), 70));
+            () -> new QuestHitChargeBase(SOLAR_PICK.get(), 70 * QUEST_MODIFIER));
 
     // Parkour Grippers
     public static final RegistryObject<Item> PARKOUR_GRIPPER = ITEMS.register("parkour_gripper",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(0.7D),8, 0.85F)
                     .setCooldownTime(25).setWallLeapTime(10).setChargeTime(20));
     public static final RegistryObject<Item> EAGER_ARTIFACT = ITEMS.register("eager_artifact",
-            () -> new QuestHitChargeBase(PARKOUR_GRIPPER.get(), 70));
+            () -> new QuestHitChargeBase(PARKOUR_GRIPPER.get(), 70 * QUEST_MODIFIER));
     // ultimate parkour gripper
     public static final RegistryObject<Item> ULTIMATE_PARKOUR_GRIPPER = ITEMS.register("ultimate_parkour_gripper",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.3D, 1.1D),12, 0.75F)
                     .setCooldownTime(30).setWallLeapTime(10).setChargeTime(20));
     public static final RegistryObject<Item> HUNGRY_STICK = ITEMS.register("hungry_stick",
-            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER.get(), 95));
+            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER.get(), 95 * QUEST_MODIFIER));
     // ultimate parkour gripper v2
     public static final RegistryObject<Item> ULTIMATE_PARKOUR_GRIPPER_V2 = ITEMS.register("ultimate_parkour_gripper_v2",
             () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.42D, 1.2D),16, 0.7F)
                     .setCooldownTime(25).setWallLeapTime(25).setChargeTime(25));
     public static final RegistryObject<Item> RAVENOUS_ROD = ITEMS.register("ravenous_rod",
-            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER_V2.get(), 140));
+            () -> new QuestHitChargeBase(ULTIMATE_PARKOUR_GRIPPER_V2.get(), 140 * QUEST_MODIFIER));
     // wings of order
     public static final RegistryObject<Item> GODS_WINGS = ITEMS.register("gods_wings",
-            () -> SwordBase.setAttackAndSpeed(new ParkourBase(1.89, 0.945D),18, 0.9F)
+            () -> SwordBase.setAttackAndSpeed(new ParkourBase(2D, 1.2D),18, 0.9F)
                     .setCooldownTime(50).setWallLeapTime(45).setChargeTime(25).setElytraFlyer());
     // blue fins
     public static final RegistryObject<Item> BLUE_FINS = ITEMS.register("blue_fins",
             () -> SwordBase.setAttackAndSpeed(new AquaParkour(1.45),13, 0.8F)
                     .setCooldownTime(65).setWallLeapTime(0).setChargeTime(0)); //2.3
     public static final RegistryObject<Item> MYSTICAL_FISH_BONE = ITEMS.register("mystical_fish_bone",
-            () -> new QuestHitChargeBase(BLUE_FINS.get(), 80));
+            () -> new QuestHitChargeBase(BLUE_FINS.get(), 80 * QUEST_MODIFIER));
 
     // blue fins
     public static final RegistryObject<Item> ENDER_ROD = ITEMS.register("ender_rod",

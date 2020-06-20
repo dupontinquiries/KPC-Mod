@@ -68,15 +68,18 @@ public class QuestHitChargeBase<T extends Item> extends QuestItemBase {
                     flag = true;
                 }
             }
+            double val = 1 + Math.sqrt( target.getMaxHealth() ) / 2.5;
+            for ( int g = 0; g < val; ++g ) {
+                if ( flag && rechargeOnePoint(stack, player) ) {
+                    if (getNBTBoolean(stack, actTag) == false) {
 
-
-            if ( flag && rechargeOnePoint(stack, player) ) {
-                if (getNBTBoolean(stack, actTag) == false) {
-
-                } else {
-                    yieldItem(stack, player);
+                    } else {
+                        yieldItem(stack, player);
+                        break;
+                    }
                 }
             }
+
 
         }
         return false;
