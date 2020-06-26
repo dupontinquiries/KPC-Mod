@@ -1,4 +1,5 @@
 package media.kitchen.parkour.itemtype.tools.spawnblade;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
@@ -19,16 +20,20 @@ public class NearestExcludingCaster<T extends LivingEntity, B extends LivingEnti
     protected EntityPredicate targetEntitySelector;
     private B caster;
 
+    private ArrayList<Integer> allies = new ArrayList<Integer>();
+
     public NearestExcludingCaster(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight) {
         this(goalOwnerIn, targetClassIn, checkSight, false);
     }
 
     public NearestExcludingCaster(MobEntity goalOwnerIn, Class<T> targetClassIn, boolean checkSight, boolean nearbyOnlyIn) {
-        this(goalOwnerIn, targetClassIn, 10, checkSight, nearbyOnlyIn, (Predicate<LivingEntity>)null);
+        this(goalOwnerIn, targetClassIn, 10, checkSight, nearbyOnlyIn, (Predicate<LivingEntity>)null, new ArrayList<>());
     }
 
-    public NearestExcludingCaster(MobEntity goalOwnerIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn, @Nullable Predicate<LivingEntity> targetPredicate) {
+    public NearestExcludingCaster(MobEntity goalOwnerIn, Class<T> targetClassIn, int targetChanceIn, boolean checkSight, boolean nearbyOnlyIn,
+                                  @Nullable Predicate<LivingEntity> targetPredicate, ArrayList<Integer> allies) {
         super(goalOwnerIn, checkSight, nearbyOnlyIn);
+        this.allies = allies;
         this.targetClass = targetClassIn;
         this.targetChance = targetChanceIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.TARGET));
@@ -49,7 +54,7 @@ public class NearestExcludingCaster<T extends LivingEntity, B extends LivingEnti
         } else {
             this.findNearestTarget();
             // exclude caster
-            if ( this.nearestTarget != null && this.nearestTarget.getUniqueID() == caster.getUniqueID() ) {
+            if ( ( this.nearestTarget != null && this.nearestTarget.getUniqueID() == caster.getUniqueID() ) || ( allies.size() > 1 && nearestTarget != null && allies.contains( nearestTarget.getEntityId() ) ) ) {
                 return false;
             }
             return this.nearestTarget != null;
@@ -62,9 +67,14 @@ public class NearestExcludingCaster<T extends LivingEntity, B extends LivingEnti
 
     protected void findNearestTarget() {
         if (this.targetClass != PlayerEntity.class && this.targetClass != ServerPlayerEntity.class) {
-            this.nearestTarget = this.goalOwner.world.<T>func_225318_b(this.targetClass, this.targetEntitySelector, this.goalOwner, this.goalOwner.getPosX(), this.goalOwner.getPosYEye(), this.goalOwner.getPosZ(), this.getTargetableArea(this.getTargetDistance()));
+            this.nearestTarget = this.goalOwner.world.<T>func_225318_b(this.targetClass,
+                    this.targetEntitySelector.setCustomPredicate( ( obj ) -> !allies.contains( obj.getEntityId() ) ),
+                    this.goalOwner, this.goalOwner.getPosX(), this.goalOwner.getPosYEye(), this.goalOwner.getPosZ(), this.getTargetableArea(this.getTargetDistance()));
         } else {
-            this.nearestTarget = this.goalOwner.world.getClosestPlayer(this.targetEntitySelector, this.goalOwner, this.goalOwner.getPosX(), this.goalOwner.getPosYEye(), this.goalOwner.getPosZ());
+            Predicate pred;
+            this.nearestTarget = this.goalOwner.world.getClosestPlayer(
+                    this.targetEntitySelector.setCustomPredicate( ( obj ) -> !allies.contains( obj.getEntityId() ) ),
+                    this.goalOwner, this.goalOwner.getPosX(), this.goalOwner.getPosYEye(), this.goalOwner.getPosZ());
         }
 
     }

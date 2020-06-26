@@ -314,7 +314,7 @@ public class Parkour
 
     // wolf blade
     public static final RegistryObject<Item> WOLF_BLADE = ITEMS.register("wolf_blade",
-            () -> new SpawnBlade(ItemTier.IRON, 4, -2.7F, new Item.Properties().maxDamage(400).addToolType(ToolType.AXE, 1), EntityType.WOLF, 250, 100, 2));
+            () -> new SpawnBlade(ItemTier.IRON, 4, -2.7F, new Item.Properties().maxDamage(400).addToolType(ToolType.AXE, 1), EntityType.WOLF, 280, 85, 2));
 
     public static final RegistryObject<Item> UNCHARGED_WOLF_BLADE = ITEMS.register("uncharged_wolf_blade",
             () -> new ItemBase(new Item.Properties().maxStackSize(1)) );
@@ -329,10 +329,10 @@ public class Parkour
             () -> new QuestHitChargeBase(DEAD_BLADE_B.get(), 45 * QUEST_MODIFIER));
 
     public static final RegistryObject<Item> BONE_BLADE = ITEMS.register("bone_blade",
-            () -> new SpawnBlade(ItemTier.STONE, 3, -2.7F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SKELETON, 200, 150, 6));
+            () -> new SpawnBlade(ItemTier.STONE, 3, -2.7F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.BLAZE, 250, 120, 12));
 
     public static final RegistryObject<Item> SHULKER_BLADE = ITEMS.register("shulker_blade",
-            () -> new SpawnBlade(ItemTier.DIAMOND, 5, -2F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SHULKER, 80, 40, 3));
+            () -> new SpawnBlade(ItemTier.DIAMOND, 5, -2F, new Item.Properties().maxDamage(370).addToolType(ToolType.AXE, 1), EntityType.SHULKER, 95, 35, 3));
 
 
     // !Legendary Arsenal

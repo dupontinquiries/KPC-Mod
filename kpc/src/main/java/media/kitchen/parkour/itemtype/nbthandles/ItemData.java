@@ -2,6 +2,7 @@ package media.kitchen.parkour.itemtype.nbthandles;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 
 import java.util.UUID;
 
@@ -53,6 +54,19 @@ public class ItemData {
         stack.setTag(tags);
     }
 
-    // ! uuid
 
+    // !uuid
+
+
+    // list nbt
+
+    public static ListNBT getListNBT(ItemStack stack, String tag) {
+        return stack.getOrCreateTag().getList(tag, 10) != null ? stack.getOrCreateTag().getList(tag, 10) : new ListNBT();
+    }
+
+    public static void setListNBT(ItemStack stack, String tag, ListNBT list) {
+        stack.getOrCreateTag().put(tag, list);
+    }
+
+    // !list nbt
 }
